@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="files">
+      <UniqueIdentifier>{fbff0587-d38c-4aed-9493-533105b426f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\utils\entry_alloc_free_hook_all.cpp">
@@ -20,8 +23,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\allocfreehook\internal_header.h">
+    <ClInclude Include="..\..\include\allocfreehook\export_symbols.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.gitattributes">
+      <Filter>files</Filter>
+    </None>
+    <None Include="..\..\.gitignore">
+      <Filter>files</Filter>
+    </None>
+    <None Include="..\..\.gitmodules">
+      <Filter>files</Filter>
+    </None>
+    <None Include="..\..\LICENSE">
+      <Filter>files</Filter>
+    </None>
+    <None Include="..\..\README.md">
+      <Filter>files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.33214.272
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "alloc_free_hook_all", "alloc_free_hook_all.vcxproj", "{FA04C153-77EC-4F3D-9E47-F475B738E247}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "projects", "projects", "{6F57B52D-EBBF-4681-B479-8B20336A883C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E3A6FBCB-4BC8-4A3F-8599-B57EAE9E168D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -36,6 +40,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E3A6FBCB-4BC8-4A3F-8599-B57EAE9E168D} = {6F57B52D-EBBF-4681-B479-8B20336A883C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D2B14DE-054D-4D1C-89C3-D69A0799A238}
