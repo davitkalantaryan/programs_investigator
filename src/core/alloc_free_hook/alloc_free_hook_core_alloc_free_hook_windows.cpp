@@ -96,25 +96,25 @@ static inline void alloc_free_hook_initialize_inline(void) {
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-ALLOCFREEHOOK_EXPORT void* MemoryHandlerCLibMalloc(size_t a_size)
+ALLOCFREEHOOK_EXPORT void* AllocFreeHookCLibMalloc(size_t a_size)
 {
 	return (*s_malloc_c_lib)(a_size);
 }
 
 
-ALLOCFREEHOOK_EXPORT void* MemoryHandlerCLibCalloc(size_t a_nmemb, size_t a_size)
+ALLOCFREEHOOK_EXPORT void* AllocFreeHookCLibCalloc(size_t a_nmemb, size_t a_size)
 {
 	return (*s_calloc_c_lib)(a_nmemb, a_size);
 }
 
 
-ALLOCFREEHOOK_EXPORT void* MemoryHandlerCLibRealloc(void* a_ptr, size_t a_size)
+ALLOCFREEHOOK_EXPORT void* AllocFreeHookCLibRealloc(void* a_ptr, size_t a_size)
 {
 	return (*s_realloc_c_lib)(a_ptr, a_size);
 }
 
 
-ALLOCFREEHOOK_EXPORT void MemoryHandlerCLibFree(void* a_ptr)
+ALLOCFREEHOOK_EXPORT void AllocFreeHookCLibFree(void* a_ptr)
 {
 	(*s_free_c_lib)(a_ptr);
 }
