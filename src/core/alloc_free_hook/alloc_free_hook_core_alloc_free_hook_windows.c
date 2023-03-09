@@ -17,13 +17,16 @@
 
 CPPUTILS_BEGIN_C
 
+//#define CInternalReplaceFunctionsMac	CInternalReplaceFunctions
+#define CInternalReplaceFunctionsMac	CInternalReplaceFunctionsAllModules
+
 
 static int s_nIsInited = 0;
 
-static TypeAllocFreeHookMalloc  s_malloc_c_lib	= &malloc;
-static TypeAllocFreeHookCalloc  s_calloc_c_lib	= &calloc;
-static TypeAllocFreeHookRealloc	s_realloc_c_lib = &realloc;
-static TypeAllocFreeHookFree	s_free_c_lib	= &free;
+static TypeAllocFreeHookMalloc  s_malloc_c_lib	/*= &malloc		*/;
+static TypeAllocFreeHookCalloc  s_calloc_c_lib	/*= &calloc		*/;
+static TypeAllocFreeHookRealloc	s_realloc_c_lib /*= &realloc	*/;
+static TypeAllocFreeHookFree	s_free_c_lib	/*= &free		*/;
 
 static TypeAllocFreeHookMalloc  g_malloc;
 static TypeAllocFreeHookCalloc  g_calloc;
@@ -73,19 +76,19 @@ static inline void alloc_free_hook_initialize_inline(void) {
 		g_free		= s_free_c_lib;
 
 		vReplaceData[0].funcname = "malloc";
-		vReplaceData[0].newFuncAddress = &AllocFreeHookMalloc;
+		vReplaceData[0].newFuncAddress = CPPUTILS_STATIC_CAST(const void*,&AllocFreeHookMalloc);
 
 		vReplaceData[1].funcname = "calloc";
-		vReplaceData[1].newFuncAddress = &AllocFreeHookCalloc;
+		vReplaceData[1].newFuncAddress = CPPUTILS_STATIC_CAST(const void*,&AllocFreeHookCalloc);
 
 		vReplaceData[2].funcname = "realloc";
-		vReplaceData[2].newFuncAddress = &AllocFreeHookRealloc;
+		vReplaceData[2].newFuncAddress = CPPUTILS_STATIC_CAST(const void*,&AllocFreeHookRealloc);
 
 
 		vReplaceData[3].funcname = "free";
-		vReplaceData[3].newFuncAddress = &AllocFreeHookFree;
+		vReplaceData[3].newFuncAddress = CPPUTILS_STATIC_CAST(const void*,&AllocFreeHookFree);
 
-		CInternalReplaceFunctions(4, vReplaceData);
+		CInternalReplaceFunctionsMac(4, vReplaceData);
 
 		_onexit(&alloc_free_hook_cleanup);
 
@@ -158,19 +161,19 @@ static int alloc_free_hook_cleanup(void) CPPUTILS_NOEXCEPT
 		struct SCInternalReplaceFunctionData vReplaceData[4];
 
 		vReplaceData[0].funcname = "malloc";
-		vReplaceData[0].newFuncAddress = s_malloc_c_lib;
+		vReplaceData[0].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_malloc_c_lib);
 
 		vReplaceData[1].funcname = "calloc";
-		vReplaceData[1].newFuncAddress = s_calloc_c_lib;
+		vReplaceData[1].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_calloc_c_lib);
 
 		vReplaceData[2].funcname = "realloc";
-		vReplaceData[2].newFuncAddress = s_realloc_c_lib;
+		vReplaceData[2].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_realloc_c_lib);
 
 
 		vReplaceData[3].funcname = "free";
-		vReplaceData[3].newFuncAddress = s_free_c_lib;
+		vReplaceData[3].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_free_c_lib);
 
-		CInternalReplaceFunctions(4, vReplaceData);
+		CInternalReplaceFunctionsMac(4, vReplaceData);
 		s_nIsInited = 0;
 	}
 
