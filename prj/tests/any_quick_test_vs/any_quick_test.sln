@@ -7,16 +7,28 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "any_quick_test", "any_quick
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|ARM.ActiveCfg = Debug|ARM
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|ARM.Build.0 = Debug|ARM
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|ARM64.Build.0 = Debug|ARM64
 		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|x64.ActiveCfg = Debug|x64
 		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|x64.Build.0 = Debug|x64
 		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|x86.ActiveCfg = Debug|Win32
 		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|x86.Build.0 = Debug|Win32
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|ARM.ActiveCfg = Release|ARM
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|ARM.Build.0 = Release|ARM
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|ARM64.ActiveCfg = Release|ARM64
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|ARM64.Build.0 = Release|ARM64
 		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|x64.ActiveCfg = Release|x64
 		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|x64.Build.0 = Release|x64
 		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|x86.ActiveCfg = Release|Win32

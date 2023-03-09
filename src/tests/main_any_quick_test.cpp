@@ -24,6 +24,13 @@ static void* MyMalloc(size_t a_size)
 }
 
 
+static int __declspec(thread) s_a1;
+static int thread_local s_a2;
+
+#ifdef CPPUTILS_CPP_11_DEFINED
+#endif
+
+
 static void MyFree(void* a_ptr)
 {
 	(*s_originalFree)(a_ptr);

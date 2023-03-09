@@ -9,6 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "projects", "projects", "{6F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E3A6FBCB-4BC8-4A3F-8599-B57EAE9E168D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "any_quick_test", "..\..\prj\tests\any_quick_test_vs\any_quick_test.vcxproj", "{BE47A251-23DB-4856-81CF-3C54342AB242}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FA04C153-77EC-4F3D-9E47-F475B738E247} = {FA04C153-77EC-4F3D-9E47-F475B738E247}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -37,12 +42,29 @@ Global
 		{FA04C153-77EC-4F3D-9E47-F475B738E247}.Release|x64.Build.0 = Release|x64
 		{FA04C153-77EC-4F3D-9E47-F475B738E247}.Release|x86.ActiveCfg = Release|Win32
 		{FA04C153-77EC-4F3D-9E47-F475B738E247}.Release|x86.Build.0 = Release|Win32
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|ARM.ActiveCfg = Debug|ARM
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|ARM.Build.0 = Debug|ARM
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|ARM64.Build.0 = Debug|ARM64
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|x64.ActiveCfg = Debug|x64
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|x64.Build.0 = Debug|x64
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|x86.ActiveCfg = Debug|Win32
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Debug|x86.Build.0 = Debug|Win32
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|ARM.ActiveCfg = Release|ARM
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|ARM.Build.0 = Release|ARM
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|ARM64.ActiveCfg = Release|ARM64
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|ARM64.Build.0 = Release|ARM64
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|x64.ActiveCfg = Release|x64
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|x64.Build.0 = Release|x64
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|x86.ActiveCfg = Release|Win32
+		{BE47A251-23DB-4856-81CF-3C54342AB242}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E3A6FBCB-4BC8-4A3F-8599-B57EAE9E168D} = {6F57B52D-EBBF-4681-B479-8B20336A883C}
+		{BE47A251-23DB-4856-81CF-3C54342AB242} = {E3A6FBCB-4BC8-4A3F-8599-B57EAE9E168D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D2B14DE-054D-4D1C-89C3-D69A0799A238}
