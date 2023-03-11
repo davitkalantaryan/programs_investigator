@@ -315,6 +315,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\.gitattributes" />
+    <None Include="..\..\.github\workflows\check_merge_to_master_and_develop.yml" />
     <None Include="..\..\.gitignore" />
     <None Include="..\..\.gitmodules" />
     <None Include="..\..\LICENSE" />

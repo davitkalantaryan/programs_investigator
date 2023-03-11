@@ -16,6 +16,12 @@
     <Filter Include="files">
       <UniqueIdentifier>{fbff0587-d38c-4aed-9493-533105b426f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="files\.github">
+      <UniqueIdentifier>{e08d7c4c-9980-48ec-909e-9d01bb0de2e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="files\.github\workflows">
+      <UniqueIdentifier>{d4e4fda9-beaa-4bc3-9c98-77ece5461274}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\utils\entry_alloc_free_hook_all.cpp">
@@ -42,6 +48,9 @@
     </None>
     <None Include="..\..\README.md">
       <Filter>files</Filter>
+    </None>
+    <None Include="..\..\.github\workflows\check_merge_to_master_and_develop.yml">
+      <Filter>files\.github\workflows</Filter>
     </None>
   </ItemGroup>
 </Project>

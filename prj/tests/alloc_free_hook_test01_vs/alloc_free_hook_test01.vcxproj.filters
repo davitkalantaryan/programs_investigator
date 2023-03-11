@@ -18,7 +18,7 @@
     <ClCompile Include="..\..\..\src\tests\main_alloc_free_hook_test01.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\core\alloc_free_hook\alloc_free_hook_core_alloc_free_hook_windows.cpp">
+    <ClCompile Include="..\..\..\src\core\alloc_free_hook\alloc_free_hook_core_alloc_free_hook_windows.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\contrib\cinternal\src\core\cinternal_core_replace_function_windows.c">
