@@ -1,0 +1,92 @@
+#
+# file:			check_merge_to_master.yml  
+# created on:	2023 Mar 11  
+#
+# usefull urls:
+#				1. https://docs.github.com/en/actions
+#				2. https://github.com/actions/starter-workflows
+#				3. https://github.com/actions/download-artifact
+#
+
+name: check-merge-to-master-and-develop
+on:
+    pull_request:
+        branches: [ master, develop ]
+
+env:
+  deployUser: kalantar
+  #deployRoot: /home/${{env.deployUser}}/build/3rd-party
+  #deployHost: mtcapitzcpu7.ifh.de
+  #deployHostAndUser: ${{env.deployUser}}@${{env.deployHost}}
+
+
+jobs:
+
+    # matrix for debian linuxes (for now ubuntu-18.04 and ubuntu-20.04)
+    debian-linuxes:
+        runs-on: ${{ matrix.os }}
+        strategy:
+          matrix:
+            #os: [ubuntu-18.04, ubuntu-20.04, LinuxMint-19.3]
+            #os: [ubuntu-18.04, ubuntu-20.04]
+            # for time being let's use only one platform on matrix, because running is not free
+            os: [ubuntu-18.04]
+            include:
+              # for all linuxes we should specify lC (lsbCode)
+              # lC=$lsbCode=`lsb_release -c | cut -f 2` # for ubuntu18
+              - os: ubuntu-18.04
+                lC: bionic
+              #- os: ubuntu-20.04
+              #  lC: focal
+              #- os: LinuxMint-19.3
+              #  lC: trica
+        steps:
+            - uses: actions/checkout@v2
+
+            #- name: Install SSH key
+            #  uses: shimataro/ssh-key-action@v2
+            #  with:
+            #   key: ${{ secrets.SSH_KEY }}
+            #   #known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+            - name: Building
+              run: echo "will be implemented"
+
+
+    # This is for windows
+    windows:
+        runs-on: windows-latest
+        steps:
+            - name: Checking out repository
+              uses: actions/checkout@v2
+
+            - name: Setup MSBuild.exe
+              uses: microsoft/setup-msbuild@v1.0.2
+
+            - name: Setup developer command prompt
+              uses: ilammy/msvc-dev-cmd@v1
+
+            - name: Developer host preparation
+              run: cmd /C .\scripts\windows_prepare_host.bat
+              #working-directory: core
+
+            - name: Repository preparation
+              run: cmd /C .\scripts\windows_prepare_repository.bat
+
+            - name: Compiling cinternal all tests
+              run: cmd /C .\scripts\windows_build_all.bat
+
+            - name: testing test apps
+              run: >
+                .\sys\win_x64\Debug\test\any_quick_test.exe
+                .\sys\win_x64\Debug\test\c_raii_test.exe
+                .\sys\win_x64\Debug\test\lhash_test.exe
+                .\sys\win_x64\Debug\test\llist_test.exe
+
+    mac:
+        #needs: prepare-ubuntu18-host
+        runs-on: macos-latest
+        steps:
+            #- uses: actions/checkout@v2
+            - run: >
+                echo "Macos tests to be done"

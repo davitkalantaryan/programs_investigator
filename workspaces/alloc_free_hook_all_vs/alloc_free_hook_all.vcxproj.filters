@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="files">
+      <UniqueIdentifier>{fbff0587-d38c-4aed-9493-533105b426f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="files\.github">
+      <UniqueIdentifier>{e08d7c4c-9980-48ec-909e-9d01bb0de2e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="files\.github\workflows">
+      <UniqueIdentifier>{d4e4fda9-beaa-4bc3-9c98-77ece5461274}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\utils\entry_alloc_free_hook_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\allocfreehook\export_symbols.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.gitattributes">
+      <Filter>files</Filter>
+    </None>
+    <None Include="..\..\.gitignore">
+      <Filter>files</Filter>
+    </None>
+    <None Include="..\..\.gitmodules">
+      <Filter>files</Filter>
+    </None>
+    <None Include="..\..\LICENSE">
+      <Filter>files</Filter>
+    </None>
+    <None Include="..\..\README.md">
+      <Filter>files</Filter>
+    </None>
+    <None Include="..\..\.github\workflows\check_merge_to_master_and_develop.yml">
+      <Filter>files\.github\workflows</Filter>
+    </None>
+  </ItemGroup>
+</Project>
