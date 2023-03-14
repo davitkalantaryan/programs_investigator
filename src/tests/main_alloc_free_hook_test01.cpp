@@ -6,7 +6,6 @@
 //
 
 
-#include <cinternal/replace_function.h>
 #include <allocfreehook/alloc_free_hook.h>
 #include <stdio.h>
 #include <stdlib.h>

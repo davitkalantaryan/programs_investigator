@@ -6,7 +6,7 @@
 #
 
 include ( "$${PWD}/../../common/common_qt/sys_common.pri" )
-include ( "$${PWD}/../../common/common_qt/flags_common.pri" )
+#include ( "$${PWD}/../../common/common_qt/flags_common.pri" )
 
 DESTDIR     = "$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/test"
 
@@ -16,13 +16,16 @@ QT -= widgets
 CONFIG -= qt
 
 LIBS += -pthread
+LIBS += -ldl
 
 repoRootPath=$${PWD}/../../..
 
 INCLUDEPATH += "$${PWD}/../../../include"
+INCLUDEPATH += "$${cinternalRepoRoot}/include"
 DEFINES += CPPUTILS_USING_STATIC_LIB_OR_OBJECTS
 
 
+SOURCES += $$files($${repoRootPath}/src/core/alloc_free_hook/*.c,true)
 SOURCES	+=		\
         "$${PWD}/../../../src/tests/main_alloc_free_hook_test01.cpp"
 
