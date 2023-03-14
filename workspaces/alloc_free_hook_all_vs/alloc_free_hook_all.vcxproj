@@ -320,6 +320,9 @@
     <None Include="..\..\.gitmodules" />
     <None Include="..\..\LICENSE" />
     <None Include="..\..\README.md" />
+    <None Include="..\..\scripts\windows_build_all.bat" />
+    <None Include="..\..\scripts\windows_prepare_host.bat" />
+    <None Include="..\..\scripts\windows_prepare_repository.bat" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
