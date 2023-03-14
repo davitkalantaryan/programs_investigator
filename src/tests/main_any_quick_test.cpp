@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifdef _WIN32
+
 typedef void* (*TypeMallocFnc)(size_t);
 typedef void (*TypeFreeFnc)(void*);
 
@@ -24,8 +26,8 @@ static void* MyMalloc(size_t a_size)
 }
 
 
-static int __declspec(thread) s_a1;
-static int thread_local s_a2;
+//static int __declspec(thread) s_a1;
+//static int thread_local s_a2;
 
 #ifdef CPPUTILS_CPP_11_DEFINED
 #endif
@@ -36,9 +38,15 @@ static void MyFree(void* a_ptr)
 	(*s_originalFree)(a_ptr);
 }
 
+
+#endif  //  #ifdef _WIN32
+
+
 int main(void)
 {
 	void* pMem;
+	
+#ifdef _WIN32
 	struct SCInternalReplaceFunctionData aReplaceData[2];
 
 	aReplaceData[0].funcname = "malloc";
@@ -48,6 +56,7 @@ int main(void)
 	aReplaceData[1].newFuncAddress = &MyFree;
 
 	CInternalReplaceFunctions(2, aReplaceData);
+#endif
 
 	pMem = malloc(100);
 	printf("pMem = %p\n", pMem);
