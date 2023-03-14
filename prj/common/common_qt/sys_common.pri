@@ -12,7 +12,7 @@ isEmpty( allocfreehookRepoRoot ) {
 }
 
 isEmpty( repositoryRoot ) {
-	repositoryRoot = $${cpputilsRepoRoot}
+	repositoryRoot = $${allocfreehookRepoRoot}
 }
 
 isEmpty( cinternalRepoRoot ) {
