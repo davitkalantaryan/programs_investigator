@@ -21,10 +21,10 @@ CPPUTILS_BEGIN_C
 //#define CInternalReplaceFunctionsMac	CInternalReplaceFunctions
 #define CInternalReplaceFunctionsMac	CInternalReplaceFunctionsAllModules
 
-typedef HMODULE (*TypeLoadLibraryA)(LPCSTR lpLibFileName);
-typedef HMODULE (*TypeLoadLibraryW)(LPWSTR lpLibFileName);
-typedef HMODULE (*TypeLoadLibraryExA)(LPCSTR lpLibFileName,HANDLE hFile,DWORD  dwFlags);
-typedef HMODULE (*TypeLoadLibraryExW)(LPWSTR lpLibFileName, HANDLE hFile, DWORD  dwFlags);
+typedef HMODULE (WINAPI *TypeLoadLibraryA)(LPCSTR lpLibFileName);
+typedef HMODULE (WINAPI *TypeLoadLibraryW)(LPWSTR lpLibFileName);
+typedef HMODULE (WINAPI *TypeLoadLibraryExA)(LPCSTR lpLibFileName,HANDLE hFile,DWORD  dwFlags);
+typedef HMODULE (WINAPI *TypeLoadLibraryExW)(LPWSTR lpLibFileName, HANDLE hFile, DWORD  dwFlags);
 
 
 static int s_nIsInited = 0;
@@ -94,7 +94,7 @@ static inline void ReplaceAllocFreeFunctionsPrepareInline(struct SCInternalRepla
 }
 
 
-static HMODULE CinternalLoadLibraryA(LPCSTR a_lpLibFileName)
+static HMODULE WINAPI CinternalLoadLibraryA(LPCSTR a_lpLibFileName)
 {
 	const HMODULE retMod = (*s_loadlibA_st_lib)(a_lpLibFileName);
 	if (retMod) {
@@ -107,7 +107,7 @@ static HMODULE CinternalLoadLibraryA(LPCSTR a_lpLibFileName)
 }
 
 
-static HMODULE CinternalLoadLibraryW(LPWSTR a_lpLibFileName)
+static HMODULE WINAPI CinternalLoadLibraryW(LPWSTR a_lpLibFileName)
 {
 	const HMODULE retMod = (*s_loadlibW_st_lib)(a_lpLibFileName);
 	if (retMod) {
@@ -120,7 +120,7 @@ static HMODULE CinternalLoadLibraryW(LPWSTR a_lpLibFileName)
 }
 
 
-static HMODULE CinternalLoadLibraryExA(LPCSTR a_lpLibFileName, HANDLE a_hFile, DWORD  a_dwFlags)
+static HMODULE WINAPI CinternalLoadLibraryExA(LPCSTR a_lpLibFileName, HANDLE a_hFile, DWORD  a_dwFlags)
 {
 	const HMODULE retMod = (*s_loadlibExA_st_lib)(a_lpLibFileName,a_hFile,a_dwFlags);
 	if (retMod) {
@@ -133,7 +133,7 @@ static HMODULE CinternalLoadLibraryExA(LPCSTR a_lpLibFileName, HANDLE a_hFile, D
 }
 
 
-static HMODULE CinternalLoadLibraryExW(LPWSTR a_lpLibFileName, HANDLE a_hFile, DWORD  a_dwFlags)
+static HMODULE WINAPI CinternalLoadLibraryExW(LPWSTR a_lpLibFileName, HANDLE a_hFile, DWORD  a_dwFlags)
 {
 	const HMODULE retMod = (*s_loadlibExW_st_lib)(a_lpLibFileName, a_hFile, a_dwFlags);
 	if (retMod) {
