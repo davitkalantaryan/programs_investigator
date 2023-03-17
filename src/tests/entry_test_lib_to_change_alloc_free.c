@@ -51,10 +51,18 @@ static void MyFree(void* a_ptr) CPPUTILS_NOEXCEPT
 }
 
 
+static int entry_test_lib_to_change_alloc_free_clean(void)
+{
+	printf("Cleaning entry_test_lib_to_change_alloc_free\n");
+	return 0;
+}
+
+
 CPPUTILS_CODE_INITIALIZER(entry_test_lib_to_change_alloc_free_initialize) {
 	printf("Initializing entry_test_lib_to_change_alloc_free\n");
 	AllocFreeHookSetMallocFnc(&MyMalloc);
 	AllocFreeHookSetFreeFnc(&MyFree);
+	_onexit(&entry_test_lib_to_change_alloc_free_clean);
 }
 
 CPPUTILS_END_C
