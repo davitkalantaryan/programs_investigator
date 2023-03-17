@@ -15,6 +15,8 @@
 #include <cinternal/replace_function_sys.h>
 #include <stdlib.h>
 
+//#define ALLOCFREEHOOK_HANDLE_LOAD_LIBS
+
 
 CPPUTILS_BEGIN_C
 
@@ -34,10 +36,12 @@ static TypeAllocFreeHookCalloc  s_calloc_c_lib	/*= &calloc		*/;
 static TypeAllocFreeHookRealloc	s_realloc_c_lib /*= &realloc	*/;
 static TypeAllocFreeHookFree	s_free_c_lib	/*= &free		*/;
 
+#ifdef ALLOCFREEHOOK_HANDLE_LOAD_LIBS
 static TypeLoadLibraryA		s_loadlibA_st_lib	/*= &LoadLibraryA		*/;
 static TypeLoadLibraryW		s_loadlibW_st_lib	/*= &LoadLibraryW		*/;
 static TypeLoadLibraryExA	s_loadlibExA_st_lib /*= &LoadLibraryExA		*/;
 static TypeLoadLibraryExW	s_loadlibExW_st_lib	/*= &LoadLibraryExW		*/;
+#endif
 
 static TypeAllocFreeHookMalloc  g_malloc;
 static TypeAllocFreeHookCalloc  g_calloc;
@@ -77,22 +81,20 @@ static void AllocFreeHookFree(void* a_ptr)
 static inline void ReplaceAllocFreeFunctionsPrepareInline(struct SCInternalReplaceFunctionData* a_vReplaceData) {
 	a_vReplaceData[0].funcname = "malloc";
 	a_vReplaceData[0].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, &AllocFreeHookMalloc);
-	a_vReplaceData[0].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, s_malloc_c_lib);
 
 	a_vReplaceData[1].funcname = "calloc";
 	a_vReplaceData[1].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, &AllocFreeHookCalloc);
-	a_vReplaceData[1].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, s_calloc_c_lib);
 
 	a_vReplaceData[2].funcname = "realloc";
 	a_vReplaceData[2].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, &AllocFreeHookRealloc);
-	a_vReplaceData[2].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, s_realloc_c_lib);
 
 
 	a_vReplaceData[3].funcname = "free";
 	a_vReplaceData[3].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, &AllocFreeHookFree);
-	a_vReplaceData[3].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, s_free_c_lib);
 }
 
+
+#ifdef ALLOCFREEHOOK_HANDLE_LOAD_LIBS
 
 static HMODULE CinternalLoadLibraryA(LPCSTR a_lpLibFileName)
 {
@@ -145,6 +147,8 @@ static HMODULE CinternalLoadLibraryExW(LPWSTR a_lpLibFileName, HANDLE a_hFile, D
 	return retMod;
 }
 
+#endif  //  #ifdef ALLOCFREEHOOK_HANDLE_LOAD_LIBS
+
 
 static inline void alloc_free_hook_initialize_inline(void) {
 	if (!s_nIsInited) {
@@ -155,10 +159,12 @@ static inline void alloc_free_hook_initialize_inline(void) {
 		s_realloc_c_lib	= &realloc;
 		s_free_c_lib	= &free;
 
+#ifdef ALLOCFREEHOOK_HANDLE_LOAD_LIBS
 		s_loadlibA_st_lib	= &LoadLibraryA;
 		s_loadlibW_st_lib	= &LoadLibraryW;
 		s_loadlibExA_st_lib = &LoadLibraryExA;
 		s_loadlibExW_st_lib	= &LoadLibraryExW;
+#endif
 
 		g_malloc	= s_malloc_c_lib;
 		g_calloc	= s_calloc_c_lib;
@@ -167,25 +173,24 @@ static inline void alloc_free_hook_initialize_inline(void) {
 
 		ReplaceAllocFreeFunctionsPrepareInline(vReplaceData);
 		CInternalReplaceFunctionsMac(4, vReplaceData);
+
+#ifdef ALLOCFREEHOOK_HANDLE_LOAD_LIBS
 		
-		// LoadLibrary and friends
 		vReplaceData[0].funcname = "LoadLibraryA";
 		vReplaceData[0].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, &CinternalLoadLibraryA);
-		vReplaceData[0].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, s_loadlibA_st_lib);
 
 		vReplaceData[1].funcname = "LoadLibraryW";
 		vReplaceData[1].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, &CinternalLoadLibraryW);
-		vReplaceData[1].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, s_loadlibW_st_lib);
 
 		vReplaceData[2].funcname = "LoadLibraryExA";
 		vReplaceData[2].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, &CinternalLoadLibraryExA);
-		vReplaceData[2].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, s_loadlibExA_st_lib);
 
 		vReplaceData[3].funcname = "LoadLibraryExW";
 		vReplaceData[3].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, &CinternalLoadLibraryExW);
-		vReplaceData[3].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, s_loadlibExW_st_lib);
 
 		CInternalReplaceFunctionsMac(4, vReplaceData);
+
+#endif  //  #ifdef ALLOCFREEHOOK_HANDLE_LOAD_LIBS
 
 		_onexit(&alloc_free_hook_cleanup);
 
@@ -257,41 +262,36 @@ static int alloc_free_hook_cleanup(void) CPPUTILS_NOEXCEPT
 	if (s_nIsInited) {
 		struct SCInternalReplaceFunctionData vReplaceData[4];
 
-		// LoadLibrary and friends
+#ifdef ALLOCFREEHOOK_HANDLE_LOAD_LIBS
+		//
 		vReplaceData[0].funcname = "LoadLibraryA";
 		vReplaceData[0].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_loadlibA_st_lib);
-		vReplaceData[0].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, &CinternalLoadLibraryA);
 
 		vReplaceData[1].funcname = "LoadLibraryW";
 		vReplaceData[1].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_loadlibW_st_lib);
-		vReplaceData[1].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, &CinternalLoadLibraryW);
 
 		vReplaceData[2].funcname = "LoadLibraryExA";
 		vReplaceData[2].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_loadlibExA_st_lib);
-		vReplaceData[2].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, &CinternalLoadLibraryExA);
 
 		vReplaceData[3].funcname = "LoadLibraryExW";
 		vReplaceData[3].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_loadlibExW_st_lib);
-		vReplaceData[3].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, &CinternalLoadLibraryExW);
 
 		CInternalReplaceFunctionsMac(4, vReplaceData);
+
+#endif  //  #ifdef ALLOCFREEHOOK_HANDLE_LOAD_LIBS
 
 		//
 		vReplaceData[0].funcname = "malloc";
 		vReplaceData[0].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_malloc_c_lib);
-		vReplaceData[0].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, &AllocFreeHookMalloc);
 
 		vReplaceData[1].funcname = "calloc";
 		vReplaceData[1].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_calloc_c_lib);
-		vReplaceData[1].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, &AllocFreeHookCalloc);
 
 		vReplaceData[2].funcname = "realloc";
 		vReplaceData[2].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_realloc_c_lib);
-		vReplaceData[2].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, &AllocFreeHookRealloc);
 
 		vReplaceData[3].funcname = "free";
 		vReplaceData[3].newFuncAddress = CPPUTILS_STATIC_CAST(const void*, s_free_c_lib);
-		vReplaceData[3].replaceIfAddressIs = CPPUTILS_STATIC_CAST(const void*, &AllocFreeHookFree);
 
 		CInternalReplaceFunctionsMac(4, vReplaceData);
 

@@ -1,0 +1,9 @@
+alloc_free_hook_test01.exe has triggered a breakpoint.
+
+140728716627216  => malloc
+140728716606880	 => calloc
+140728716628592	 => realloc
+140728716626272	 => free
+
+
+"msvcrt.dll"	also contains malloc/free definations
