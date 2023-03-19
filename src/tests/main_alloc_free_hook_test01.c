@@ -11,7 +11,7 @@
 #include <stdlib.h>
 
 
-static int CPPUTILS_THREAD_LOCAL  s_nIgnoreThisStack = 0;
+static CPPUTILS_THREAD_LOCAL int s_nIgnoreThisStack = 0;
 
 static void* MyMalloc(size_t a_size) CPPUTILS_NOEXCEPT
 {

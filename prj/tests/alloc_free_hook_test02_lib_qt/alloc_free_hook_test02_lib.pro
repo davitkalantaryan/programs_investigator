@@ -8,7 +8,7 @@
 TEMPLATE = lib
 
 include ( "$${PWD}/../../common/common_qt/sys_common.pri" )
-#include ( "$${PWD}/../../common/common_qt/flags_common.pri" )
+include ( "$${PWD}/../../common/common_qt/flags_common.pri" )
 
 QT -= gui
 QT -= core
