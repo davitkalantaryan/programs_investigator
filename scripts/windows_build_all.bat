@@ -21,6 +21,19 @@ cd /D "%scriptDirectory%.."
 set "repositoryRoot=%cd%\"
 
 
+if not defined CintrVirtProjectDir (
+	set "CintrVirtProjectDir=%repositoryRoot%prj\common\common_vs"
+)
+set "CintrVirtProjectDir=!CintrVirtProjectDir!"
+
+if not defined CintrVirtWorkspaceDir (
+	set "CintrVirtWorkspaceDir=%repositoryRoot%prj\common\common_vs"
+)
+set "CintrVirtWorkspaceDir=!CintrVirtWorkspaceDir!"
+
+call "%repositoryRoot%contrib\cinternal\scripts\windows_build_all.bat"
+
+
 :: handling arguments
 ::set argC=0
 ::for %%x in (%*) do Set /A argC+=1
