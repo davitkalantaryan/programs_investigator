@@ -17,8 +17,6 @@ CONFIG -= qt
 
 LIBS += -L$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/lib
 LIBS += -lalloc_free_hook_test02_lib
-LIBS += -pthread
-LIBS += -ldl
 
 repoRootPath=$${PWD}/../../..
 
@@ -26,8 +24,6 @@ INCLUDEPATH += "$${PWD}/../../../include"
 INCLUDEPATH += "$${cinternalRepoRoot}/include"
 DEFINES += CPPUTILS_USING_STATIC_LIB_OR_OBJECTS
 
-
-SOURCES += $$files($${repoRootPath}/src/core/alloc_free_hook/*.c,true)
 SOURCES	+=		\
         "$${PWD}/../../../src/tests/main_alloc_free_hook_test02_exe.cpp"
 
@@ -36,3 +32,5 @@ COMMON_HDRSPP	= $$files($${repoRootPath}/include/*.hpp,true)
 
 HEADERS += $$COMMON_HDRS
 HEADERS += $$COMMON_HDRSPP
+
+OTHER_FILES += $$files($${PWD}/../alloc_free_hook_test02_exe_mkfl/*.Makefile,false)

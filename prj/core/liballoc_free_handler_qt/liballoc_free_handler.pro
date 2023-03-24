@@ -1,14 +1,18 @@
 #
-# file:			alloc_free_hook_test01.pro
-# path:			prj/tests/alloc_free_hook_test01_qt/alloc_free_hook_test01.pro
-# created on:	2021 Mar 14
+# file:		liballoc_free_handler.pro
+# path:		prj/core/liballoc_free_handler_qt/liballoc_free_handler.pro
+# created on:	2021 Mar 24
 # created by:	Davit Kalantaryan (davit.kalantaryan@desy.de)
 #
+
+TEMPLATE = lib
+CONFIG += dll
+CONFIG -= static
+TARGET = alloc_free_handler
 
 include ( "$${PWD}/../../common/common_qt/sys_common.pri" )
 include ( "$${PWD}/../../common/common_qt/flags_common.pri" )
 
-DESTDIR     = "$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/test"
 
 QT -= gui
 QT -= core
@@ -22,12 +26,10 @@ repoRootPath=$${PWD}/../../..
 
 INCLUDEPATH += "$${PWD}/../../../include"
 INCLUDEPATH += "$${cinternalRepoRoot}/include"
-DEFINES += CPPUTILS_USING_STATIC_LIB_OR_OBJECTS
+DEFINES += ALLOCFREEHOOK_COMPILING_SHARED_LIB
 
 
 SOURCES += $$files($${repoRootPath}/src/core/alloc_free_hook/*.c,true)
-SOURCES	+=		\
-        "$${PWD}/../../../src/tests/main_alloc_free_hook_test01.c"
 
 COMMON_HDRS	= $$files($${repoRootPath}/include/*.h,true)
 COMMON_HDRSPP	= $$files($${repoRootPath}/include/*.hpp,true)
@@ -35,4 +37,4 @@ COMMON_HDRSPP	= $$files($${repoRootPath}/include/*.hpp,true)
 HEADERS += $$COMMON_HDRS
 HEADERS += $$COMMON_HDRSPP
 
-OTHER_FILES += $$files($${PWD}/../alloc_free_hook_test01_mkfl/*.Makefile,false)
+OTHER_FILES += $$files($${PWD}/../liballoc_free_handler_mkfl/*.Makefile,false)

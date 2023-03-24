@@ -16,8 +16,8 @@ QT -= core
 QT -= widgets
 CONFIG -= qt
 
-LIBS += -pthread
-LIBS += -ldl
+LIBS += -L$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/lib
+LIBS += -lalloc_free_handler
 
 repoRootPath=$${PWD}/../../..
 
@@ -26,7 +26,7 @@ INCLUDEPATH += "$${cinternalRepoRoot}/include"
 DEFINES += CPPUTILS_USING_STATIC_LIB_OR_OBJECTS
 
 
-SOURCES += $$files($${repoRootPath}/src/core/alloc_free_hook/*.c,true)
+#SOURCES += $$files($${repoRootPath}/src/core/alloc_free_hook/*.c,true)
 SOURCES	+=		\
         "$${PWD}/../../../src/tests/entry_test_lib_to_change_alloc_free.c"
 
@@ -35,3 +35,5 @@ COMMON_HDRSPP	= $$files($${repoRootPath}/include/*.hpp,true)
 
 HEADERS += $$COMMON_HDRS
 HEADERS += $$COMMON_HDRSPP
+
+OTHER_FILES += $$files($${PWD}/../test_lib_to_change_alloc_free_mkfl/*.Makefile,false)
