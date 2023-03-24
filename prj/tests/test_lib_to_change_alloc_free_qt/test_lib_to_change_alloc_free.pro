@@ -18,6 +18,7 @@ CONFIG -= qt
 
 LIBS += -L$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/lib
 LIBS += -lalloc_free_handler
+LIBS += -pthread
 
 repoRootPath=$${PWD}/../../..
 

@@ -26,7 +26,7 @@ int main(void)
 {
 	void* pMem;
 
-	printf("application with the pid %d will start and mallo/free memory in ifinite loop\n", TestGetPid());
+	printf("application will do malloc/free memory in ifinite loop. Pid is: %d\n", TestGetPid());
 
 	while (1) {
 		pMem = malloc(100);

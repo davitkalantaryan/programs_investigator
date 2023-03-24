@@ -6,7 +6,7 @@
 #
 
 TEMPLATE = subdirs
-#CONFIG += ordered
+CONFIG += ordered
 
 repositoryRoot = $${PWD}/../..
 

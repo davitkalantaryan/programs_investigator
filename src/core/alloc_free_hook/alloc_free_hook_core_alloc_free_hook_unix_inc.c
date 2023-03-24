@@ -139,6 +139,32 @@ ALLOCFREEHOOK_EXPORT void AllocFreeHookCLibFree(void* a_ptr)
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
+ALLOCFREEHOOK_EXPORT TypeAllocFreeHookMalloc AllocFreeHookGetMallocFnc(void)
+{
+    return g_malloc;
+}
+
+
+ALLOCFREEHOOK_EXPORT TypeAllocFreeHookCalloc AllocFreeHookGetCallocFnc(void)
+{
+    return g_calloc;
+}
+
+
+ALLOCFREEHOOK_EXPORT TypeAllocFreeHookRealloc AllocFreeHookGetReallocFnc(void)
+{
+    return g_realloc;
+}
+
+
+ALLOCFREEHOOK_EXPORT TypeAllocFreeHookFree AllocFreeHookGetFreeFnc(void)
+{
+    return g_free;
+}
+
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 
 static inline size_t AllocFreeHookCalculateRoundedMemorySizeInline(size_t a_initialSize){
     a_initialSize += sizeof(struct SMemoryHandlerInitMemData);
