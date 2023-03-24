@@ -7,12 +7,13 @@ mkfile_dir		=  $(shell dirname $(mkfile_path))
 firstTarget: all
 
 COMMON_FLAGS += -fPIC -DALLOCFREEHOOK_COMPILING_SHARED_LIB
+COMMON_FLAGS += -DALLOCFREEHOOK_LOAD_FROM_DLL
 
 include $(mkfile_dir)/../../common/common_mkfl/unix.common.Makefile
 
 SOURCES += $(allocFreeRepoRoot)/src/tests/entry_test_lib_to_change_alloc_free.c
 
-LIBS += -lalloc_free_handler -L$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/lib
+LIBS += -lalloc_free_handler -L$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/lib 
 
 all: $(repoRootPath)/sys/$(lsbCode)/$(Configuration)/dll/lib$(targetName).so.1
 

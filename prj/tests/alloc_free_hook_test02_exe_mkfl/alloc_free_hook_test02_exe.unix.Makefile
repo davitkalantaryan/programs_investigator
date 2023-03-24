@@ -11,14 +11,16 @@ include $(mkfile_dir)/../../common/common_mkfl/unix.common.Makefile
 SOURCES	= $(shell find $(allocFreeRepoRoot)/src/core/alloc_free_hook -name "*.c")
 SOURCES += $(allocFreeRepoRoot)/src/tests/main_alloc_free_hook_test02_exe.cpp
 
-LIBS += -lalloc_free_hook_test02_lib -L$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/lib
+COMMON_FLAGS += -DALLOCFREEHOOK_LOAD_FROM_DLL
+
+LIBS += -lalloc_free_hook_test02_lib -L$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/lib -ldl
 
 all: $(repoRootPath)/sys/$(lsbCode)/$(Configuration)/test/$(targetName)
 
 $(repoRootPath)/sys/$(lsbCode)/$(Configuration)/test/$(targetName): \
 	$(SOURCES:%=$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)/%.o)
 	@mkdir -p $(@D)
-	@$(LINK) $^ $(LIBS) $(LFLAGS) -o $@
+	@$(LINK) $^ $(LFLAGS) -o $@ $(LIBS)
 
 .PHONY: clean
 clean:

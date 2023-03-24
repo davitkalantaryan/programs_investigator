@@ -23,7 +23,7 @@ repoRootPath=$${PWD}/../../..
 
 INCLUDEPATH += "$${PWD}/../../../include"
 INCLUDEPATH += "$${cinternalRepoRoot}/include"
-DEFINES += CPPUTILS_USING_STATIC_LIB_OR_OBJECTS
+DEFINES += ALLOCFREEHOOK_LOAD_FROM_DLL
 
 
 #SOURCES += $$files($${repoRootPath}/src/core/alloc_free_hook/*.c,true)

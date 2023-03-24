@@ -35,5 +35,5 @@ fi
 
 cd workspaces/alloc_free_hook_all_mkfl
 unset CPPUTILS_DEBUG
-make -f cinternal_all.unix.Makefile
-make -f cinternal_all.unix.Makefile CPPUTILS_DEBUG=1
+make -f alloc_free_hook_all.unix.Makefile
+make -f alloc_free_hook_all.unix.Makefile CPPUTILS_DEBUG=1

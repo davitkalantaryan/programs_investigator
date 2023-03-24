@@ -19,7 +19,7 @@ $(repoRootPath)/sys/$(lsbCode)/$(Configuration)/dll/lib$(targetName).so.1: \
 	$(SOURCES:%=$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)/%.o)
 	@mkdir -p $(@D)
 	@mkdir -p $(@D)/../lib
-	@$(LINK) $^ -Wl,-E,-soname,lib$(targetName).so.1 -pie -shared -ldl $(LIBS) $(LFLAGS) -o $@
+	@$(LINK) $^ -Wl,-E,-soname,lib$(targetName).so.1 -pie -shared $(LFLAGS) -o $@ $(LIBS) -ldl -pthread
 	@rm -f $(@D)/../lib/lib$(targetName).so
 	@cd $(@D)/../lib && ln -s ../dll/lib$(targetName).so.1 lib$(targetName).so
 
