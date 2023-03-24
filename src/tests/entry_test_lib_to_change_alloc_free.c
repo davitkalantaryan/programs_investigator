@@ -61,7 +61,7 @@ static void entry_test_lib_to_change_alloc_free_clean(void)
 	printf("Cleaning entry_test_lib_to_change_alloc_free\n");
     AllocFreeHookSetMallocFnc(s_initial_malloc);
 	AllocFreeHookSetFreeFnc(s_initial_free);
-    pthread_key_delete(s_threadSpecificKey);
+	CinternalTlsDelete(s_threadSpecificKey);
 }
 
 
@@ -74,7 +74,7 @@ static void ThreadSpecificKeyDestructor(void* a_pData)
 CPPUTILS_CODE_INITIALIZER(entry_test_lib_to_change_alloc_free_initialize) {
 	printf("Initializing entry_test_lib_to_change_alloc_free\n");
     
-    if(pthread_key_create(&s_threadSpecificKey,&ThreadSpecificKeyDestructor)){
+    if(CinternalTlsAlloc(&s_threadSpecificKey,&ThreadSpecificKeyDestructor)){
         exit(1);
     }
     

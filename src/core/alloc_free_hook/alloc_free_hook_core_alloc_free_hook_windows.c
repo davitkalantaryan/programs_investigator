@@ -252,6 +252,32 @@ ALLOCFREEHOOK_EXPORT void AllocFreeHookSetFreeFnc(TypeAllocFreeHookFree a_free)
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
+ALLOCFREEHOOK_EXPORT TypeAllocFreeHookMalloc AllocFreeHookGetMallocFnc(void)
+{
+	return g_malloc;
+}
+
+
+ALLOCFREEHOOK_EXPORT TypeAllocFreeHookCalloc AllocFreeHookGetCallocFnc(void)
+{
+	return g_calloc;
+}
+
+
+ALLOCFREEHOOK_EXPORT TypeAllocFreeHookRealloc AllocFreeHookGetReallocFnc(void)
+{
+	return g_realloc;
+}
+
+
+ALLOCFREEHOOK_EXPORT TypeAllocFreeHookFree AllocFreeHookGetFreeFnc(void)
+{
+	return g_free;
+}
+
+
+/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 static int alloc_free_hook_cleanup(void) CPPUTILS_NOEXCEPT
 {
 	if (s_nIsInited) {
