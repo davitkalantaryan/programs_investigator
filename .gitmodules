@@ -1,3 +1,6 @@
 [submodule "contrib/cinternal"]
 	path = contrib/cinternal
 	url = https://github.com/davitkalantaryan/cinternal.git
+[submodule "contrib/stack_investigator"]
+	path = contrib/stack_investigator
+	url = https://github.com/davitkalantaryan/stack_investigator.git
