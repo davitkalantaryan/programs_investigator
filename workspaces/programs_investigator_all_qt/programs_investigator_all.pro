@@ -9,6 +9,8 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 repositoryRoot = $${PWD}/../..
+artifactRoot = $${repositoryRoot}
+include ( "$${repositoryRoot}/prj/common/common_qt/flags_common.pri" )
 
 SUBDIRS		+=	"$${repositoryRoot}/prj/core/liballoc_free_handler_qt/liballoc_free_handler.pro"
 
@@ -18,6 +20,8 @@ SUBDIRS		+=	"$${repositoryRoot}/prj/tests/alloc_free_hook_test02_exe_qt/alloc_fr
 SUBDIRS		+=	"$${repositoryRoot}/prj/tests/alloc_free_hook_test03_qt/alloc_free_hook_test03.pro"
 SUBDIRS		+=	"$${repositoryRoot}/prj/tests/any_quick_test_qt/any_quick_test.pro"
 SUBDIRS		+=	"$${repositoryRoot}/prj/tests/test_lib_to_change_alloc_free_qt/test_lib_to_change_alloc_free.pro"
+
+SUBDIRS += "$${cinternalRepoRoot}/workspaces/cinternal_all_qt/cinternal_all.pro"
 
 
 
