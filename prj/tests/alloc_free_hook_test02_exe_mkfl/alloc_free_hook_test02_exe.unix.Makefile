@@ -6,7 +6,7 @@ mkfile_dir		=  $(shell dirname $(mkfile_path))
 
 firstTarget: all
 
-include $(mkfile_dir)/../../common/common_mkfl/unix.common.Makefile
+include $(mkfile_dir)/../../common/common_mkfl/sys_common.unix.Makefile
 
 SOURCES	= $(shell find $(programsInvestigatorRepoRoot)/src/core/alloc_free_hook -name "*.c")
 SOURCES += $(programsInvestigatorRepoRoot)/src/tests/main_alloc_free_hook_test02_exe.cpp

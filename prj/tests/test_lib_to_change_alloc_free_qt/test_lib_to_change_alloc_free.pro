@@ -23,7 +23,7 @@ LIBS += -pthread
 DEFINES += ALLOCFREEHOOK_LOAD_FROM_DLL
 
 
-#SOURCES += $$files($${repoRootPath}/src/core/alloc_free_hook/*.c,true)
+#SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/alloc_free_hook/*.c,true)
 SOURCES	+=		\
         "$${PWD}/../../../src/tests/entry_test_lib_to_change_alloc_free.c"
 

@@ -9,16 +9,16 @@ firstTarget: all
 COMMON_FLAGS += -fPIC -DALLOCFREEHOOK_COMPILING_SHARED_LIB
 COMMON_FLAGS += -DALLOCFREEHOOK_LOAD_FROM_DLL
 
-include $(mkfile_dir)/../../common/common_mkfl/unix.common.Makefile
+include $(mkfile_dir)/../../common/common_mkfl/sys_common.unix.Makefile
 
 SOURCES += $(programsInvestigatorRepoRoot)/src/tests/entry_test_lib_to_change_alloc_free.c
 
-LIBS += -lalloc_free_handler -L$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/lib -pthread
+LIBS += -lalloc_free_handler -L$(artifactRoot)/sys/$(lsbCode)/$(Configuration)/lib -pthread
 
 all: $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/dll/lib$(targetName).so.1
 
 $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/dll/lib$(targetName).so.1: \
-		$(SOURCES:%=$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)/%.o)
+		$(SOURCES:%=$(artifactRoot)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)/%.o)
 	@mkdir -p $(@D)
 	@mkdir -p $(@D)/../lib
 	@$(LINK) $^ -Wl,-E,-soname,lib$(targetName).so.1 -pie -shared -ldl $(LIBS) $(LFLAGS) -o $@

@@ -8,7 +8,7 @@ firstTarget: all
 
 COMMON_FLAGS += -fPIC -DALLOCFREEHOOK_COMPILING_SHARED_LIB
 
-include $(mkfile_dir)/../../common/common_mkfl/unix.common.Makefile
+include $(mkfile_dir)/../../common/common_mkfl/sys_common.unix.Makefile
 
 SOURCES	= $(shell find $(programsInvestigatorRepoRoot)/src/core/alloc_free_hook -name "*.c")
 SOURCES += $(programsInvestigatorRepoRoot)/src/tests/entry_alloc_free_hook_test02_lib.cpp
