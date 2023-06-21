@@ -14,12 +14,12 @@ SOURCES += $(programsInvestigatorRepoRoot)/src/tests/main_alloc_free_hook_test03
 all: $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/test/$(targetName)
 
 $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/test/$(targetName): \
-	$(SOURCES:%=$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)/%.o)
+		$(SOURCES:%=$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)/%.o)
 	@mkdir -p $(@D)
 	@$(LINK) $^ $(LIBS) -ldl -pthread $(LFLAGS) -o $@
 
 .PHONY: clean
 clean:
-        @rm -rf $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)
-        @rm -f  $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/test/$(targetName)
+	@rm -rf $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)
+	@rm -f  $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/test/$(targetName)
 	@echo "  " cleaning of $(targetName) complete !!!
