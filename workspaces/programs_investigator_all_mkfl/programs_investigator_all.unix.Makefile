@@ -8,6 +8,8 @@ mkfile_dir		=  $(shell dirname $(mkfile_path))
 include $(mkfile_dir)/../../prj/common/common_mkfl/sys_common.unix.Makefile
 
 all:
+	make -f $(cinternalRepoRoot)/workspaces/cinternal_all_mkfl/cinternal_all.unix.Makefile artifactRoot=$(artifactRoot)
+	
 	make -f $(programsInvestigatorRepoRoot)/prj/core/liballoc_free_handler_mkfl/liballoc_free_handler.unix.Makefile
 	
 	make -f $(programsInvestigatorRepoRoot)/prj/tests/alloc_free_hook_test01_mkfl/alloc_free_hook_test01.unix.Makefile
@@ -21,6 +23,8 @@ all:
 
 .PHONY: clean
 clean:
+	make -f $(cinternalRepoRoot)/workspaces/cinternal_all_mkfl/cinternal_all.unix.Makefile artifactRoot=$(artifactRoot) clean
+	
 	make -f $(programsInvestigatorRepoRoot)/prj/core/liballoc_free_handler_mkfl/liballoc_free_handler.unix.Makefile clean
 	
 	make -f $(programsInvestigatorRepoRoot)/prj/tests/alloc_free_hook_test01_mkfl/alloc_free_hook_test01.unix.Makefile clean
