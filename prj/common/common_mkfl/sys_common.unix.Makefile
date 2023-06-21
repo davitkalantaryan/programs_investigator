@@ -8,7 +8,7 @@ ifndef programsInvestigatorRepoRoot
 endif
 
 ifndef repositoryRoot
-        repositoryRoot	= $(stackInvestigatorRepoRoot)
+        repositoryRoot	= $(programsInvestigatorRepoRoot)
 endif
 
 ifndef artifactRoot

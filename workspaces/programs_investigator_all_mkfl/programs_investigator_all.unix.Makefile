@@ -5,7 +5,7 @@ targetName=programs_investigator_all
 mkfile_path		=  $(abspath $(lastword $(MAKEFILE_LIST)))
 mkfile_dir		=  $(shell dirname $(mkfile_path))
 
-include $(mkfile_dir)/../../prj/common/common_mkfl/sys_common_unix.Makefile
+include $(mkfile_dir)/../../prj/common/common_mkfl/sys_common.unix.Makefile
 
 all:
 	make -f $(programsInvestigatorRepoRoot)/prj/core/liballoc_free_handler_mkfl/liballoc_free_handler.unix.Makefile
