@@ -18,17 +18,13 @@ CONFIG -= qt
 LIBS += -L$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/lib
 LIBS += -lalloc_free_hook_test02_lib
 
-repoRootPath=$${PWD}/../../..
-
-INCLUDEPATH += "$${PWD}/../../../include"
-INCLUDEPATH += "$${cinternalRepoRoot}/include"
 DEFINES += ALLOCFREEHOOK_LOAD_FROM_DLL
 
 SOURCES	+=		\
         "$${PWD}/../../../src/tests/main_alloc_free_hook_test02_exe.cpp"
 
-COMMON_HDRS	= $$files($${repoRootPath}/include/*.h,true)
-COMMON_HDRSPP	= $$files($${repoRootPath}/include/*.hpp,true)
+COMMON_HDRS	= $$files($${programsInvestigatorRepoRoot}/include/*.h,true)
+COMMON_HDRSPP	= $$files($${programsInvestigatorRepoRoot}/include/*.hpp,true)
 
 HEADERS += $$COMMON_HDRS
 HEADERS += $$COMMON_HDRSPP

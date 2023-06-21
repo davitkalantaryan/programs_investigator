@@ -20,10 +20,6 @@ LIBS += -L$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/lib
 LIBS += -lalloc_free_handler
 LIBS += -pthread
 
-repoRootPath=$${PWD}/../../..
-
-INCLUDEPATH += "$${PWD}/../../../include"
-INCLUDEPATH += "$${cinternalRepoRoot}/include"
 DEFINES += ALLOCFREEHOOK_LOAD_FROM_DLL
 
 
@@ -31,8 +27,8 @@ DEFINES += ALLOCFREEHOOK_LOAD_FROM_DLL
 SOURCES	+=		\
         "$${PWD}/../../../src/tests/entry_test_lib_to_change_alloc_free.c"
 
-COMMON_HDRS	= $$files($${repoRootPath}/include/*.h,true)
-COMMON_HDRSPP	= $$files($${repoRootPath}/include/*.hpp,true)
+COMMON_HDRS	= $$files($${programsInvestigatorRepoRoot}/include/*.h,true)
+COMMON_HDRSPP	= $$files($${programsInvestigatorRepoRoot}/include/*.hpp,true)
 
 HEADERS += $$COMMON_HDRS
 HEADERS += $$COMMON_HDRSPP

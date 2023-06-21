@@ -8,22 +8,22 @@ firstTarget: all
 
 include $(mkfile_dir)/../../common/common_mkfl/unix.common.Makefile
 
-SOURCES	= $(shell find $(allocFreeRepoRoot)/src/core/alloc_free_hook -name "*.c")
-SOURCES += $(allocFreeRepoRoot)/src/tests/main_alloc_free_hook_test02_exe.cpp
+SOURCES	= $(shell find $(programsInvestigatorRepoRoot)/src/core/alloc_free_hook -name "*.c")
+SOURCES += $(programsInvestigatorRepoRoot)/src/tests/main_alloc_free_hook_test02_exe.cpp
 
 COMMON_FLAGS += -DALLOCFREEHOOK_LOAD_FROM_DLL
 
-LIBS += -lalloc_free_hook_test02_lib -L$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/lib -ldl
+LIBS += -lalloc_free_hook_test02_lib -L$(artifactRoot)/sys/$(lsbCode)/$(Configuration)/lib -ldl
 
-all: $(repoRootPath)/sys/$(lsbCode)/$(Configuration)/test/$(targetName)
+all: $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/test/$(targetName)
 
-$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/test/$(targetName): \
-	$(SOURCES:%=$(repoRootPath)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)/%.o)
+$(artifactRoot)/sys/$(lsbCode)/$(Configuration)/test/$(targetName): \
+        $(SOURCES:%=$(artifactRoot)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)/%.o)
 	@mkdir -p $(@D)
 	@$(LINK) $^ $(LFLAGS) -o $@ $(LIBS)
 
 .PHONY: clean
 clean:
-	@rm -rf $(repoRootPath)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)
-	@rm -f  $(repoRootPath)/sys/$(lsbCode)/$(Configuration)/test/$(targetName)
+        @rm -rf $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)
+        @rm -f  $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/test/$(targetName)
 	@echo "  " cleaning of $(targetName) complete !!!

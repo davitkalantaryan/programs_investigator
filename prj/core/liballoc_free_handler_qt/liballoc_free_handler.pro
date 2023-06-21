@@ -22,17 +22,13 @@ CONFIG -= qt
 LIBS += -pthread
 LIBS += -ldl
 
-repoRootPath=$${PWD}/../../..
-
-INCLUDEPATH += "$${PWD}/../../../include"
-INCLUDEPATH += "$${cinternalRepoRoot}/include"
 DEFINES += ALLOCFREEHOOK_COMPILING_SHARED_LIB
 
 
-SOURCES += $$files($${repoRootPath}/src/core/alloc_free_hook/*.c,true)
+SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/alloc_free_hook/*.c,true)
 
-COMMON_HDRS	= $$files($${repoRootPath}/include/*.h,true)
-COMMON_HDRSPP	= $$files($${repoRootPath}/include/*.hpp,true)
+COMMON_HDRS	= $$files($${programsInvestigatorRepoRoot}/include/*.h,true)
+COMMON_HDRSPP	= $$files($${programsInvestigatorRepoRoot}/include/*.hpp,true)
 
 HEADERS += $$COMMON_HDRS
 HEADERS += $$COMMON_HDRSPP

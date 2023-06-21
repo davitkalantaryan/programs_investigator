@@ -18,19 +18,15 @@ CONFIG -= qt
 LIBS += -pthread
 LIBS += -ldl
 
-repoRootPath=$${PWD}/../../..
-
-INCLUDEPATH += "$${PWD}/../../../include"
-INCLUDEPATH += "$${cinternalRepoRoot}/include"
 DEFINES += CPPUTILS_USING_STATIC_LIB_OR_OBJECTS
 
 
-SOURCES += $$files($${repoRootPath}/src/core/alloc_free_hook/*.c,true)
+SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/alloc_free_hook/*.c,true)
 SOURCES	+=		\
         "$${PWD}/../../../src/tests/main_alloc_free_hook_test03.c"
 
-COMMON_HDRS	= $$files($${repoRootPath}/include/*.h,true)
-COMMON_HDRSPP	= $$files($${repoRootPath}/include/*.hpp,true)
+COMMON_HDRS	= $$files($${programsInvestigatorRepoRoot}/include/*.h,true)
+COMMON_HDRSPP	= $$files($${programsInvestigatorRepoRoot}/include/*.hpp,true)
 
 HEADERS += $$COMMON_HDRS
 HEADERS += $$COMMON_HDRSPP
