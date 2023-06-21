@@ -7,17 +7,17 @@
 
 message ("$${PWD}/sys_common.pri")
 
-isEmpty( allocfreehookRepoRoot ) {
-	allocfreehookRepoRoot = $${PWD}/../../..
+
+isEmpty( programsInvestigatorRepoRoot ) {
+        programsInvestigatorRepoRoot = $${PWD}/../../..
 }
 
 isEmpty( repositoryRoot ) {
-	repositoryRoot = $${allocfreehookRepoRoot}
+        repositoryRoot = $${programsInvestigatorRepoRoot}
 }
 
-isEmpty( cinternalRepoRoot ) {
-	cinternalRepoRoot=$${allocfreehookRepoRoot}/contrib/cinternal
+isEmpty( stackInvestigatorRepoRoot ) {
+        stackInvestigatorRepoRoot=$${programsInvestigatorRepoRoot}/contrib/stack_investigator
 }
 
-
-include ( "$${cinternalRepoRoot}/prj/common/common_qt/sys_common.pri" )
+include ( "$${stackInvestigatorRepoRoot}/prj/common/common_qt/sys_common.pri" )

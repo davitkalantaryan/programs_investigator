@@ -32,6 +32,6 @@ OTHER_FILES	+=	\
 	"$${repositoryRoot}/.gitmodules"							    \
 	"$${repositoryRoot}/LICENSE"								    \
 	"$${repositoryRoot}/README.md"								    \
-	"$${repositoryRoot}/workspaces/alloc_free_hook_all_mkfl/alloc_free_hook_all.unix.Makefile"  \
+        "$${repositoryRoot}/workspaces/programs_investigator_all_mkfl/programs_investigator_all.unix.Makefile"  \
 	"$${PWD}/../../prj/common/common_mkfl/unix.common.Makefile"				    \
 	"$${PWD}/../../prj/common/common_mkfl/windows.common.Makefile"

@@ -7,14 +7,19 @@
 
 message ("$${PWD}/flags_common.pri")
 
-isEmpty( allocfreehookRepoRoot ) {
-	allocfreehookRepoRoot = $${PWD}/../../..
+isEmpty( programsInvestigatorRepoRoot ) {
+        programsInvestigatorRepoRoot = $${PWD}/../../..
 }
 
-isEmpty( cinternalRepoRoot ) {
-	cinternalRepoRoot=$${allocfreehookRepoRoot}/contrib/cinternal
+isEmpty( repositoryRoot ) {
+        repositoryRoot = $${programsInvestigatorRepoRoot}
 }
 
-include ( "$${cinternalRepoRoot}/prj/common/common_qt/flags_common.pri" )
 
-INCLUDEPATH += $${allocfreehookRepoRoot}/include
+isEmpty( stackInvestigatorRepoRoot ) {
+        stackInvestigatorRepoRoot=$${programsInvestigatorRepoRoot}/contrib/stack_investigator
+}
+
+include ( "$${stackInvestigatorRepoRoot}/prj/common/common_qt/flags_common.pri" )
+
+INCLUDEPATH += $${programsInvestigatorRepoRoot}/include

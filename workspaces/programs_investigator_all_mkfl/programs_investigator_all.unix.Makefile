@@ -1,6 +1,6 @@
 
 
-targetName=alloc_free_hook_all
+targetName=programs_investigator_all
 
 mkfile_path		=  $(abspath $(lastword $(MAKEFILE_LIST)))
 mkfile_dir		=  $(shell dirname $(mkfile_path))
