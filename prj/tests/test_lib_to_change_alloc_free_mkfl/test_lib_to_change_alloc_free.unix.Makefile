@@ -13,7 +13,7 @@ include $(mkfile_dir)/../../common/common_mkfl/sys_common.unix.Makefile
 
 SOURCES += $(programsInvestigatorRepoRoot)/src/tests/entry_test_lib_to_change_alloc_free.c
 
-LIBS += -lalloc_free_handler -L$(artifactRoot)/sys/$(lsbCode)/$(Configuration)/lib -pthread
+LIBS += -lprogs_invest_basic -L$(artifactRoot)/sys/$(lsbCode)/$(Configuration)/lib -pthread
 
 all: $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/dll/lib$(targetName).so.1
 

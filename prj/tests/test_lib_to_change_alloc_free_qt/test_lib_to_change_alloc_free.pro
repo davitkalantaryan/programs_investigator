@@ -17,7 +17,7 @@ QT -= widgets
 CONFIG -= qt
 
 LIBS += -L$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/lib
-LIBS += -lalloc_free_handler
+LIBS += -lprogs_invest_basic
 LIBS += -pthread
 
 DEFINES += ALLOCFREEHOOK_LOAD_FROM_DLL
