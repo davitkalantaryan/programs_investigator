@@ -25,6 +25,7 @@ LIBS += -ldl
 DEFINES += ALLOCFREEHOOK_COMPILING_SHARED_LIB
 
 
+SOURCES += $${programsInvestigatorRepoRoot}/src/core/entry_libprogs_invest_basic.c
 SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/alloc_free_hook/*.c,true)
 
 COMMON_HDRS	= $$files($${programsInvestigatorRepoRoot}/include/*.h,true)

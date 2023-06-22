@@ -10,7 +10,8 @@ COMMON_FLAGS += -fPIC -DALLOCFREEHOOK_COMPILING_SHARED_LIB
 
 include $(mkfile_dir)/../../common/common_mkfl/sys_common.unix.Makefile
 
-SOURCES	= $(shell find $(programsInvestigatorRepoRoot)/src/core/alloc_free_hook -name "*.c")
+SOURCES = $(programsInvestigatorRepoRoot)/src/core/entry_libprogs_invest_basic.c
+SOURCES	+= $(shell find $(programsInvestigatorRepoRoot)/src/core/alloc_free_hook -name "*.c")
 
 all: $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/dll/$(targetName).so.$(PROGS_INVEST_VERSION)
 

@@ -20,7 +20,7 @@ $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/tdll/lib$(targetName).so.1: \
 	@mkdir -p $(@D)
 	@mkdir -p $(@D)/../tlib
 	@$(LINK) $^ -Wl,-E,-soname,lib$(targetName).so.1 -pie -shared $(LFLAGS) -o $@ $(LIBS) -ldl -pthread
-	@rm -f $(@D)/../lib/lib$(targetName).so
+	@rm -f $(@D)/../tlib/lib$(targetName).so
 	@cd $(@D)/../tlib && ln -s ../tdll/lib$(targetName).so.1 lib$(targetName).so
 
 .PHONY: clean
