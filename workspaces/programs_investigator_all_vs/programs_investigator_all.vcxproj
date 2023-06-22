@@ -187,7 +187,12 @@
       <ImportLibrary />
     </Link>
     <PreBuildEvent>
-      <Command>cmd /C "set "CintrVirtProjectDir=$(ProjectDir)vd"  &amp;&amp;  $(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat $(PlatformTarget) $(Configuration) Build"</Command>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -206,7 +211,12 @@
       <ImportLibrary />
     </Link>
     <PreBuildEvent>
-      <Command>cmd /C "set "CintrVirtProjectDir=$(ProjectDir)vd"  &amp;&amp;  $(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat $(PlatformTarget) $(Configuration) Build"</Command>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
@@ -225,7 +235,12 @@
       <ImportLibrary />
     </Link>
     <PreBuildEvent>
-      <Command>cmd /C "set "CintrVirtProjectDir=$(ProjectDir)vd"  &amp;&amp;  $(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat $(PlatformTarget) $(Configuration) Build"</Command>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -248,7 +263,12 @@
       <ImportLibrary />
     </Link>
     <PreBuildEvent>
-      <Command>cmd /C "set "CintrVirtProjectDir=$(ProjectDir)vd"  &amp;&amp;  $(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat $(PlatformTarget) $(Configuration) Build"</Command>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -271,7 +291,12 @@
       <ImportLibrary />
     </Link>
     <PreBuildEvent>
-      <Command>cmd /C "set "CintrVirtProjectDir=$(ProjectDir)vd"  &amp;&amp;  $(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat $(PlatformTarget) $(Configuration) Build"</Command>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
@@ -294,7 +319,12 @@
       <ImportLibrary />
     </Link>
     <PreBuildEvent>
-      <Command>cmd /C "set "CintrVirtProjectDir=$(ProjectDir)vd"  &amp;&amp;  $(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat $(PlatformTarget) $(Configuration) Build"</Command>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -313,7 +343,12 @@
       <ImportLibrary />
     </Link>
     <PreBuildEvent>
-      <Command>cmd /C "set "CintrVirtProjectDir=$(ProjectDir)vd"  &amp;&amp;  $(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat $(PlatformTarget) $(Configuration) Build"</Command>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -336,7 +371,12 @@
       <ImportLibrary />
     </Link>
     <PreBuildEvent>
-      <Command>cmd /C "set "CintrVirtProjectDir=$(ProjectDir)vd"  &amp;&amp;  $(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat $(PlatformTarget) $(Configuration) Build"</Command>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
