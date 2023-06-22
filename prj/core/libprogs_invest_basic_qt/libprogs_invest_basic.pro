@@ -33,4 +33,4 @@ COMMON_HDRSPP	= $$files($${programsInvestigatorRepoRoot}/include/*.hpp,true)
 HEADERS += $$COMMON_HDRS
 HEADERS += $$COMMON_HDRSPP
 
-OTHER_FILES += $$files($${PWD}/../liballoc_free_handler_mkfl/*.Makefile,false)
+OTHER_FILES += $$files($${PWD}/../libprogs_invest_basic_mkfl/*.Makefile,false)

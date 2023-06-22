@@ -72,7 +72,8 @@ static void ThreadSpecificKeyDestructor(void* a_pData)
 
 
 CPPUTILS_CODE_INITIALIZER(entry_test_lib_to_change_alloc_free_initialize) {
-	printf("Initializing entry_test_lib_to_change_alloc_free\n");
+
+    printf("Initializing entry_test_lib_to_change_alloc_free\n");
     
     if(CinternalTlsAlloc(&s_threadSpecificKey,&ThreadSpecificKeyDestructor)){
         exit(1);

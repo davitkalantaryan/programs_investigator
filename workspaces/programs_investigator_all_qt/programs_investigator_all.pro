@@ -10,7 +10,7 @@ CONFIG += ordered
 
 include ( "$${PWD}/../../prj/common/common_qt/flags_common.pri" )
 
-SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/core/liballoc_free_handler_qt/liballoc_free_handler.pro"
+SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/core/libprogs_invest_basic_qt/libprogs_invest_basic.pro"
 
 SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/tests/alloc_free_hook_test01_qt/alloc_free_hook_test01.pro"
 SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/tests/alloc_free_hook_test02_lib_qt/alloc_free_hook_test02_lib.pro"
@@ -31,8 +31,9 @@ OTHER_FILES += $$files($${programsInvestigatorRepoRoot}/prj/common/common_mkfl/*
 OTHER_FILES += $$files($${programsInvestigatorRepoRoot}/workspaces/programs_investigator_all_mkfl/*.Makefile,true)
 
 OTHER_FILES	+=	\
-        "$${repositoryRoot}/.gitattributes"							    \
-	"$${repositoryRoot}/.gitignore"								    \
-	"$${repositoryRoot}/.gitmodules"							    \
-	"$${repositoryRoot}/LICENSE"								    \
+        "$${repositoryRoot}/.gitattributes"							\
+	"$${repositoryRoot}/.gitignore"								\
+	"$${repositoryRoot}/.gitmodules"							\
+	"$${repositoryRoot}/ENVIRONMENT"							\
+	"$${repositoryRoot}/LICENSE"								\
         "$${repositoryRoot}/README.md"
