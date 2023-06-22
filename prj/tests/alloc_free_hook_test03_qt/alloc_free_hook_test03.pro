@@ -21,7 +21,7 @@ LIBS += -ldl
 DEFINES += CPPUTILS_USING_STATIC_LIB_OR_OBJECTS
 
 
-SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/alloc_free_hook/*.c,true)
+#SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/alloc_free_hook/*.c,true)
 SOURCES	+=		\
         "$${PWD}/../../../src/tests/main_alloc_free_hook_test03.c"
 
