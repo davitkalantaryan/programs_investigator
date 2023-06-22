@@ -29,5 +29,5 @@ $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/dll/$(targetName).so.$(PROGS_INV
 clean:
 	@rm -rf $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/.objects/$(targetName)
 	@rm -f  $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/dll/$(targetName).so*
-	@rm -f  $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/lib/$(targetName).so
+	@rm -f  $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/lib/$(targetName).so*
 	@echo "  " cleaning of $(targetName) complete !!!

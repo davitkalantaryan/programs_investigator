@@ -13,7 +13,7 @@ SOURCES += $(programsInvestigatorRepoRoot)/src/tests/main_alloc_free_hook_test02
 
 COMMON_FLAGS += -DALLOCFREEHOOK_LOAD_FROM_DLL
 
-LIBS += -lalloc_free_hook_test02_lib -L$(artifactRoot)/sys/$(lsbCode)/$(Configuration)/lib -ldl
+LIBS += -lalloc_free_hook_test02_lib -L$(artifactRoot)/sys/$(lsbCode)/$(Configuration)/tlib -ldl
 
 all: $(artifactRoot)/sys/$(lsbCode)/$(Configuration)/test/$(targetName)
 
