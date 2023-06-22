@@ -23,26 +23,14 @@
 CPPUTILS_BEGIN_C
 
 
-static void* s_pLibDlhandle = CPPUTILS_NULL;
 
-
-static void entry_cinternal_core_init_libdl_clean(void)
+CPPUTILS_DLL_PUBLIC void* dummy_dlfnc_initialize_for_dynalic_load(void)
 {
-	if(s_pLibDlhandle){
-		dlclose(s_pLibDlhandle);
-		s_pLibDlhandle = CPPUTILS_NULL;
-	}
+    return dlsym(RTLD_NEXT, "malloc");
 }
-
-
-CPPUTILS_CODE_INITIALIZER(entry_cinternal_core_init_libdl_initialize){
-
-    s_pLibDlhandle = dlopen("libdl.so",RTLD_NOW);
-	atexit(&entry_cinternal_core_init_libdl_clean);
-}
-
-
-#endif  //  #ifndef _WIN32
 
 
 CPPUTILS_END_C
+
+
+#endif  //  #ifndef _WIN32
