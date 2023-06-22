@@ -27,11 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\utils\entry_alloc_free_hook_all.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\include\allocfreehook\export_symbols.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -64,5 +59,10 @@
     <None Include="..\..\scripts\windows_prepare_repository.bat">
       <Filter>files\scripts</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\utils\entry_programs_investigator_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

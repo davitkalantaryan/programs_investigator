@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.33214.272
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "alloc_free_hook_all", "alloc_free_hook_all.vcxproj", "{FA04C153-77EC-4F3D-9E47-F475B738E247}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "programs_investigator_all", "programs_investigator_all.vcxproj", "{FA04C153-77EC-4F3D-9E47-F475B738E247}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "projects", "projects", "{6F57B52D-EBBF-4681-B479-8B20336A883C}"
 EndProject

@@ -1,6 +1,6 @@
 //
-// file:            entry_alloc_free_hook_all.cpp
-// path:			src/utils/entry_alloc_free_hook_all.cpp
+// file:            entry_programs_investigator_all.cpp
+// path:			src/utils/entry_programs_investigator_all.cpp
 // created on:		2023 Mar 08
 // created by:		Davit Kalantaryan (davit.kalantaryan@desy.de)
 //
@@ -11,7 +11,7 @@
 CPPUTILS_BEGIN_C
 
 
-CPPUTILS_DLL_PUBLIC void dummy_entry_alloc_free_hook_all(void)
+CPPUTILS_DLL_PUBLIC void dummy_programs_investigator_all(void)
 {
 }
 
