@@ -20,8 +20,8 @@ extern CPPUTILS_DLL_PRIVATE TypeAllocFreeHookCalloc  g_calloc;
 extern CPPUTILS_DLL_PRIVATE TypeAllocFreeHookRealloc g_realloc;
 extern CPPUTILS_DLL_PRIVATE TypeAllocFreeHookFree    g_free ;
 
-CPPUTILS_DLL_PUBLIC void* MemoryHandlerRealloc(void* a_ptr, size_t a_size);
-CPPUTILS_DLL_PRIVATE void MemoryHandlerFree(void* a_ptr);
+CPPUTILS_DLL_PRIVATE void* MemoryHandlerRealloc(void* a_ptr, size_t a_size);
+CPPUTILS_DLL_PRIVATE void  MemoryHandlerFree(void* a_ptr);
 
 
 CPPUTILS_DLL_PUBLIC void* malloc(size_t a_size)
