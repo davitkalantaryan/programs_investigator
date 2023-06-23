@@ -30,7 +30,7 @@ jobs:
             #os: [ubuntu-18.04, ubuntu-20.04, LinuxMint-19.3]
             #os: [ubuntu-18.04, ubuntu-20.04]
             # for time being let's use only one platform on matrix, because running is not free
-            os: [ubuntu-18.04]
+            # os: [ubuntu-18.04]
             include:
               # for all linuxes we should specify lC (lsbCode)
               # lC=$lsbCode=`lsb_release -c | cut -f 2` and for mac just mac
