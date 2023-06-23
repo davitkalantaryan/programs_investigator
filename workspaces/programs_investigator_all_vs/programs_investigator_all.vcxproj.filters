@@ -22,11 +22,9 @@
     <Filter Include="files\.github\workflows">
       <UniqueIdentifier>{d4e4fda9-beaa-4bc3-9c98-77ece5461274}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\src\utils\entry_alloc_free_hook_all.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <Filter Include="files\scripts">
+      <UniqueIdentifier>{bcd2d00b-b8fa-469d-88cc-047109a895be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\allocfreehook\export_symbols.h">
@@ -52,5 +50,19 @@
     <None Include="..\..\.github\workflows\check_merge_to_master_and_develop.yml">
       <Filter>files\.github\workflows</Filter>
     </None>
+    <None Include="..\..\scripts\windows_build_all.bat">
+      <Filter>files\scripts</Filter>
+    </None>
+    <None Include="..\..\scripts\windows_prepare_host.bat">
+      <Filter>files\scripts</Filter>
+    </None>
+    <None Include="..\..\scripts\windows_prepare_repository.bat">
+      <Filter>files\scripts</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\utils\entry_programs_investigator_all.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

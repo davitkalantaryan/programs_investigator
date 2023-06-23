@@ -21,6 +21,30 @@ cd /D "%scriptDirectory%.."
 set "repositoryRoot=%cd%\"
 
 
+if not defined CintrVirtWorkspaceDir (
+	set "CintrVirtWorkspaceDir=%repositoryRoot%prj\common\"
+)
+set "CintrVirtWorkspaceDir=!CintrVirtWorkspaceDir!"
+
+
+if not defined CintrVirtProjectDir (
+	set "CintrVirtProjectDir=!CintrVirtWorkspaceDir!common_qt\"
+)
+set "CintrVirtProjectDir=!CintrVirtProjectDir!"
+
+if not defined PlatformToolsetVar (
+	set "PlatformToolsetVarMid=%VCToolsVersion:~0,2%"
+	set "PlatformToolsetVarEnd=%VCToolsVersion:~3,1%"
+	set "PlatformToolsetVar=v%PlatformToolsetVarMid%%PlatformToolsetVarEnd%"
+
+	rem todo: get rid of below code
+	set "PlatformToolsetVar=v143"
+	echo PlatformToolsetVar=%PlatformToolsetVar%
+)
+
+call "%repositoryRoot%contrib\cinternal\scripts\windows_build_all.bat" %*
+
+
 :: handling arguments
 ::set argC=0
 ::for %%x in (%*) do Set /A argC+=1
@@ -48,7 +72,7 @@ for %%p in (%PlatformTarget%) do (
 	echo "!!!!!!!!!!!! platform %%p"
 	for %%c in (%Configuration%) do (
 		echo "!!!!!!!!!!!! !!!!!!!!!!!! compiling for configuration %%c"
-		call msbuild "%repositoryRoot%workspaces\alloc_free_hook_all_vs\alloc_free_hook_all.sln" /t:!ActionConfirm! /p:Configuration=%%c /p:Platform=%%p
+		call msbuild "%repositoryRoot%workspaces\programs_investigator_all_vs\programs_investigator_all.sln" /t:!ActionConfirm! /p:Configuration=%%c /p:Platform=%%p
 		if not "!ERRORLEVEL!"=="0" (exit /b !ERRORLEVEL!)
 	)
 )

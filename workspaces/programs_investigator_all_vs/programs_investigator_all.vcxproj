@@ -37,8 +37,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{bca2de85-45f5-4ff9-b7d9-ee61f2576424}</ProjectGuid>
-    <RootNamespace>allocfreehooktest02lib</RootNamespace>
+    <ProjectGuid>{fa04c153-77ec-4f3d-9e47-f475b738e247}</ProjectGuid>
+    <RootNamespace>allocfreehookall</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -125,43 +125,51 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\dll\</OutDir>
-    <IntDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <OutDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\util\</OutDir>
+    <IntDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\dll\</OutDir>
-    <IntDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <OutDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\util\</OutDir>
+    <IntDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\dll\</OutDir>
-    <IntDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <OutDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\util\</OutDir>
+    <IntDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\dll\</OutDir>
-    <IntDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <OutDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\util\</OutDir>
+    <IntDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\dll\</OutDir>
-    <IntDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <OutDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\util\</OutDir>
+    <IntDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\dll\</OutDir>
-    <IntDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <OutDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\util\</OutDir>
+    <IntDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\dll\</OutDir>
-    <IntDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <OutDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\util\</OutDir>
+    <IntDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\dll\</OutDir>
-    <IntDir>$(ProgInvestVirtProjectDir)..\..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <OutDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\util\</OutDir>
+    <IntDir>$(ProgInvestVirtWorkspaceDir)..\..\sys\win_$(PlatformTarget)\$(Configuration)\.other\objects\$(ProjectName)\</IntDir>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -169,15 +177,23 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
-      <ImportLibrary>$(OutDir)..\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary />
     </Link>
+    <PreBuildEvent>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
@@ -185,15 +201,23 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
-      <ImportLibrary>$(OutDir)..\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary />
     </Link>
+    <PreBuildEvent>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
@@ -201,15 +225,23 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
-      <ImportLibrary>$(OutDir)..\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary />
     </Link>
+    <PreBuildEvent>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -219,7 +251,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -228,8 +260,16 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
-      <ImportLibrary>$(OutDir)..\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary />
     </Link>
+    <PreBuildEvent>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
@@ -239,7 +279,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -248,8 +288,16 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
-      <ImportLibrary>$(OutDir)..\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary />
     </Link>
+    <PreBuildEvent>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <ClCompile>
@@ -259,7 +307,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -268,8 +316,16 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
-      <ImportLibrary>$(OutDir)..\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary />
     </Link>
+    <PreBuildEvent>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -277,15 +333,23 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
-      <ImportLibrary>$(OutDir)..\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary />
     </Link>
+    <PreBuildEvent>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -295,7 +359,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\include;$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -304,11 +368,33 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies />
-      <ImportLibrary>$(OutDir)..\lib\$(TargetName).lib</ImportLibrary>
+      <ImportLibrary />
     </Link>
+    <PreBuildEvent>
+      <Command>set "CintrVirtProjectDir=$(ProjectDir)vd"  
+set "VCINSTALLDIR=$(VCInstallDir)"
+call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: call "$(ProjectDir)..\..\contrib\stack_investigator\contrib\cinternal\scripts\windows_build_all.bat" $(PlatformTarget) $(Configuration) Build
+:: set "VCINSTALLDIR=$(VCInstallDir)"
+::echo ++++ %VCINSTALLDIR%</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\tests\entry_alloc_free_hook_test02_lib.cpp" />
+    <ClInclude Include="..\..\include\allocfreehook\export_symbols.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\.gitattributes" />
+    <None Include="..\..\.github\workflows\check_merge_to_master_and_develop.yml" />
+    <None Include="..\..\.gitignore" />
+    <None Include="..\..\.gitmodules" />
+    <None Include="..\..\LICENSE" />
+    <None Include="..\..\README.md" />
+    <None Include="..\..\scripts\windows_build_all.bat" />
+    <None Include="..\..\scripts\windows_prepare_host.bat" />
+    <None Include="..\..\scripts\windows_prepare_repository.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\utils\entry_programs_investigator_all.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
