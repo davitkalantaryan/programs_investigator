@@ -33,21 +33,18 @@ jobs:
             os: [ubuntu-18.04]
             include:
               # for all linuxes we should specify lC (lsbCode)
-              # lC=$lsbCode=`lsb_release -c | cut -f 2` # for ubuntu18
-              - os: ubuntu-18.04
-                lC: bionic
-              #- os: ubuntu-20.04
-              #  lC: focal
+              # lC=$lsbCode=`lsb_release -c | cut -f 2` and for mac just mac
+              - os: ubuntu-20.04
+                lC: focal
+              - os: ubuntu-22.04
+                lC: jammy
+              - os: macos-latest
+                lC: mac
               #- os: LinuxMint-19.3
               #  lC: trica
         steps:
-            - uses: actions/checkout@v2
-
-            #- name: Install SSH key
-            #  uses: shimataro/ssh-key-action@v2
-            #  with:
-            #   key: ${{ secrets.SSH_KEY }}
-            #   #known_hosts: ${{ secrets.KNOWN_HOSTS }}
+            - name: Checking out repository
+              uses: actions/checkout@v3
 
             - name: Building
               run: echo "will be implemented"
@@ -58,10 +55,10 @@ jobs:
         runs-on: windows-latest
         steps:
             - name: Checking out repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Setup MSBuild.exe
-              uses: microsoft/setup-msbuild@v1.0.2
+              uses: microsoft/setup-msbuild@v1.1
 
             - name: Setup developer command prompt
               uses: ilammy/msvc-dev-cmd@v1
