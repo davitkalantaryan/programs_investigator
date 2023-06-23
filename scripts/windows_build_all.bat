@@ -32,6 +32,16 @@ if not defined CintrVirtProjectDir (
 )
 set "CintrVirtProjectDir=!CintrVirtProjectDir!"
 
+if not defined PlatformToolsetVar (
+	set "PlatformToolsetVarMid=%VCToolsVersion:~0,2%"
+	set "PlatformToolsetVarEnd=%VCToolsVersion:~3,1%"
+	set "PlatformToolsetVar=v%PlatformToolsetVarMid%%PlatformToolsetVarEnd%"
+
+	rem todo: get rid of below code
+	set "PlatformToolsetVar=v143"
+	echo PlatformToolsetVar=%PlatformToolsetVar%
+)
+
 call "%repositoryRoot%contrib\cinternal\scripts\windows_build_all.bat" %*
 
 
