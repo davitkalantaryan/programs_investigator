@@ -8,7 +8,7 @@
 TEMPLATE = lib
 CONFIG += dll
 CONFIG -= static
-TARGET = alloc_free_handler
+TARGET = progs_invest_basic
 
 include ( "$${PWD}/../../common/common_qt/sys_common.pri" )
 include ( "$${PWD}/../../common/common_qt/flags_common.pri" )

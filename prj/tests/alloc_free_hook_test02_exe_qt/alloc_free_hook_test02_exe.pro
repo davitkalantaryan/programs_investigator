@@ -15,7 +15,7 @@ QT -= core
 QT -= widgets
 CONFIG -= qt
 
-LIBS += -L$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/lib
+LIBS += -L$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/tlib
 LIBS += -lalloc_free_hook_test02_lib
 
 DEFINES += ALLOCFREEHOOK_LOAD_FROM_DLL

@@ -18,6 +18,7 @@ SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/tests/alloc_free_hook_test02_e
 SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/tests/alloc_free_hook_test03_qt/alloc_free_hook_test03.pro"
 SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/tests/any_quick_test_qt/any_quick_test.pro"
 SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/tests/test_lib_to_change_alloc_free_qt/test_lib_to_change_alloc_free.pro"
+SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/tests/stdout_invest_test_qt/stdout_invest_test.pro"
 
 SUBDIRS += "$${cinternalRepoRoot}/workspaces/cinternal_all_qt/cinternal_all.pro"
 
