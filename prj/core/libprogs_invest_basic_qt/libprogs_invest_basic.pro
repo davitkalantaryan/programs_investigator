@@ -26,6 +26,7 @@ DEFINES += ALLOCFREEHOOK_COMPILING_SHARED_LIB
 
 
 SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/alloc_free_hook/*.c,true)
+SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/stdout_invest/*.c,true)
 
 COMMON_HDRS	= $$files($${programsInvestigatorRepoRoot}/include/*.h,true)
 COMMON_HDRSPP	= $$files($${programsInvestigatorRepoRoot}/include/*.hpp,true)
