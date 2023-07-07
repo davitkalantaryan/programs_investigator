@@ -305,7 +305,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\contrib\stack_investigator\contrib\cinternal\src\core\cinternal_core_replace_function_windows.c" />
-    <ClCompile Include="..\..\..\src\core\alloc_free_hook\alloc_free_hook_core_alloc_free_hook_windows.c" />
+    <ClCompile Include="..\..\..\src\core\alloc_free_hook\programs_investigator_core_alloc_free_hook_windows.c" />
     <ClCompile Include="..\..\..\src\tests\main_any_quick_test.cpp" />
   </ItemGroup>
   <ItemGroup>
