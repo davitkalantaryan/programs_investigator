@@ -21,7 +21,7 @@ LIBS += -ldl
 DEFINES += CPPUTILS_USING_STATIC_LIB_OR_OBJECTS
 
 
-SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/stdout_invest/*.c,true)
+SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/stdout_invest/*.c*,true)
 SOURCES	+=		\
         "$${PWD}/../../../src/tests/main_stdout_invest_test.cpp"
 
