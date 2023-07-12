@@ -81,9 +81,9 @@ static int PrInvStdoutInvClbkOriginal(enum PrInvStdoutHndl a_hndl,const void* a_
 {
     switch(a_hndl){
     case PrInvStdoutHndlOut:
-        return (*s_original_fwrite)(a_pBuffer,a_size,a_count,stdout);
+        return CPPUTILS_STATIC_CAST(int,(*s_original_fwrite)(a_pBuffer,a_size,a_count,stdout));
     case PrInvStdoutHndlErr:
-        return (*s_original_fwrite)(a_pBuffer,a_size,a_count,stderr);
+        return CPPUTILS_STATIC_CAST(int,(*s_original_fwrite)(a_pBuffer,a_size,a_count,stderr));
     default:
         break;
     }  //  switch(a_hndl){
@@ -98,7 +98,7 @@ static int PutsFinal(const char* a_str)
     if(pthread_getspecific(s_threadLocalKey)){
         return (*s_original_puts)(a_str);
     }
-    pthread_setspecific(s_threadLocalKey,CPPUTILS_STATIC_CAST(void*,1));
+    pthread_setspecific(s_threadLocalKey, (void*)1);
     nRet = (*s_userClbk)(PrInvStdoutHndlOut,a_str,1,strlen(a_str));
     pthread_setspecific(s_threadLocalKey,CPPUTILS_NULL);
     return nRet;
@@ -114,9 +114,10 @@ static size_t FwriteFinal(const void* a_ptr, size_t a_size, size_t a_nmemb,FILE*
     if(pthread_getspecific(s_threadLocalKey)){
         return (*s_original_fwrite)(a_ptr,a_size,a_nmemb,a_stream);
     }
-    pthread_setspecific(s_threadLocalKey,CPPUTILS_STATIC_CAST(void*,1));
+    pthread_setspecific(s_threadLocalKey, (void*)1);
     outHndl = (a_stream==stdout)?PrInvStdoutHndlOut:PrInvStdoutHndlErr;
     nRet = (*s_userClbk)(outHndl,a_ptr,a_size,a_nmemb);
+    pthread_setspecific(s_threadLocalKey, CPPUTILS_NULL);
     return nRet;
 }
 
