@@ -25,6 +25,10 @@ LIBS += -pthread
 LIBS += -ldl
 
 DEFINES += PRINV_LEAKA_COMPILING_SHARED_LIB
+DEFINES += STACK_INVEST_USING_STATIC_LIB_OR_OBJECTS
+DEFINES += STACK_INVEST_ANY_ALLOC=MemoryHandlerCLibMalloc
+DEFINES += STACK_INVEST_ANY_FREE=MemoryHandlerCLibFree
+DEFINES += STACK_INVEST_C_LIB_FREE_NO_CLBK=MemoryHandlerCLibFree
 
 
 SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/leak_analyze/*.c*,true)
