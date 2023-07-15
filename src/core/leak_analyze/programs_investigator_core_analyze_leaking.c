@@ -10,6 +10,7 @@
 #include <progs_invest/alloc_free_hook.h>
 #include <stack_investigator/investigator.h>
 #include <cinternal/c_raii.h>
+#include <cinternal/logger.h>
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
@@ -60,8 +61,7 @@ static inline long int GetIntFromVariableInline(const char* a_cpcVariableName){
 
     if(pcEnvValue){
         long int lnVal = strtol(pcEnvValue,CPPUTILS_NULL,10);
-        printf("!!!! %s = %ld\n",a_cpcVariableName,lnVal);
-        fflush(stdout);
+        CInternalLogDebug("!!!! %s = %ld",a_cpcVariableName,lnVal);
         return strtol(pcEnvValue,CPPUTILS_NULL,10);
     }
     return -1;
@@ -120,7 +120,7 @@ static void ClearThreadLocalKeyStatic(void* a_pData)
 
 
 PRINV_LEAKA_EXPORT int ProgsInvestAnalyzeLeakingInitialize(struct SPrInvAnalyzeLeakingData* a_pTables,
-                                                           TypeFinalAction CPPUTILS_ARG_NN a_fncWhenLeak,
+                                                           TypeFinalAction CPPUTILS_ARG_NN a_fncWhenLeak, void* a_pUserData,
                                                            const char* a_cpcStartTimeEnv, const char* a_cpcMaxForStackEnv)
 {
     int nRet;
@@ -160,6 +160,7 @@ PRINV_LEAKA_EXPORT int ProgsInvestAnalyzeLeakingInitialize(struct SPrInvAnalyzeL
     a_pTables->deltaTimeToStartAnalyze = (deltaTimeToStartAnalyze<0) ? MEMORY_LEAK_ANALYZE_INIT_TIME_SEC_DEFAULT : CPPUTILS_STATIC_CAST(time_t,deltaTimeToStartAnalyze);
     a_pTables->countForThisStackMax = (maxForStack<0) ? MEMORY_LEAK_ANALYZE_MAX_ALLOC_DEFAULT : CPPUTILS_STATIC_CAST(size_t,maxForStack);
     a_pTables->fncWhenLeak = a_fncWhenLeak;
+    a_pTables->pUserData = a_pUserData;
     a_pTables->unMaxValue = 0;
 
     return 0;
@@ -172,6 +173,29 @@ PRINV_LEAKA_EXPORT void ProgsInvestAnalyzeLeakingClean(struct SPrInvAnalyzeLeaki
     CInternalDLLHashDestroy(a_pTables->hashByAddress);
     CInternalDLLHashDestroyEx(a_pTables->hashByStack,&HashByStackDeallocator);
     cinternal_lw_recursive_mutex_destroy(&(a_pTables->mutexForHashes));
+}
+
+
+PRINV_LEAKA_EXPORT void ProgsInvestFinalActionPrintStackAndExit(void* a_pUserData,const struct StackInvestBacktrace* a_pStack)
+{
+    struct StackInvestStackItem*const pStackItems = (struct StackInvestStackItem*)AllocFreeHookCLibMalloc(((size_t)(a_pStack->stackDeepness))*sizeof(struct StackInvestStackItem));
+    CInternalLogError("  possible memory leak!!!!!. UserData = %p",a_pUserData);
+    if(pStackItems){
+        if(!StackInvestConvertBacktraceToNames(a_pStack,pStackItems)){
+            int i=0;
+            for(;i<a_pStack->stackDeepness;++i){
+                if(pStackItems[i].line>=0){
+                    CInternalLogError("bin: %s, %s(%d), fn:%s",
+                                      pStackItems[i].binFile, pStackItems[i].sourceFile,
+                                      pStackItems[i].line, pStackItems[i].funcName);
+                }
+                else{
+                    CInternalLogError("%s",pStackItems[i].binFile);
+                }
+            }  //  for(;i<pItem->pStack->stackDeepness;++i){
+        }  //  if(!StackInvestConvertBacktraceToNames(pItem->pStack,pStackItems)){
+    }  //  if(pStackItems){
+    exit(1);
 }
 
 
@@ -198,36 +222,17 @@ static inline int CrashInvestAnalyzeLeakingAddAllocedItemNoLockInline(int a_goBa
         StackInvestFreeBacktraceData(pCurStack);  //  no need to keep this stack data twce
         pItem = (struct SMemoryLeakAnalyseItem*)(hashIterStack->data);
         if((++(pItem->countForThisStack))>(a_pTables->countForThisStackMax)){
-            struct StackInvestStackItem*const pStackItems = (struct StackInvestStackItem*)AllocFreeHookCLibMalloc(((size_t)(pItem->pStack->stackDeepness))*sizeof(struct StackInvestStackItem));
-            if(pStackItems){
-                if(!StackInvestConvertBacktraceToNames(pItem->pStack,pStackItems)){
-                    int i=0;
-                    for(;i<pItem->pStack->stackDeepness;++i){
-                        if(pStackItems[i].line>=0){
-                            fprintf(stderr,"bin: %s, %s(%d), fn:%s\n",pStackItems[i].binFile, pStackItems[i].sourceFile, pStackItems[i].line, pStackItems[i].funcName);
-                        }
-                        else{
-                            fprintf(stderr,"%s\n",pStackItems[i].binFile);
-                        }
-                    }  //  for(;i<pItem->pStack->stackDeepness;++i){
-                }  //  if(!StackInvestConvertBacktraceToNames(pItem->pStack,pStackItems)){
-            }  //  if(pStackItems){
-            fprintf(stderr,"  possible memory leak!!!!!\n");
-            fflush(stderr);
-            //StackInvestPrintTrace();
-            exit(1);
+            (*(a_pTables->fncWhenLeak))(a_pTables->pUserData,pItem->pStack);
         }
         else if(pItem->countForThisStack>(a_pTables->unMaxValue)){
             a_pTables->unMaxValue = pItem->countForThisStack;
             if(pcTemp){
                 *pcTemp = 0;
-                fprintf(stderr,"!!! %s",vcCurTimeStr);
+                CInternalLogDebug("!!! %s new max =>  %d",vcCurTimeStr,(int)(a_pTables->unMaxValue));
             }
             else{
-                fprintf(stderr,"!!!!!!!");
+                CInternalLogDebug("!!!!!!! new max =>  %d",(int)(a_pTables->unMaxValue));
             }
-            fprintf(stderr," new max =>  %d\n",(int)(a_pTables->unMaxValue));
-            fflush(stderr);
         }
     }  //  if(hashIterStack){
     else{

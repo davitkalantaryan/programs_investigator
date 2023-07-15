@@ -21,7 +21,7 @@
 CPPUTILS_BEGIN_C
 
 struct StackInvestBacktrace;
-typedef void (*TypeFinalAction)(const struct StackInvestBacktrace* a_pStack);
+typedef void (*TypeFinalAction)(void* a_pUserData,const struct StackInvestBacktrace* a_pStack);
 
 struct SPrInvAnalyzeLeakingData {
     cinternal_lw_recursive_mutex_t  mutexForHashes;
@@ -33,17 +33,19 @@ struct SPrInvAnalyzeLeakingData {
     time_t                          initTimeSec;
     time_t                          deltaTimeToStartAnalyze;
     TypeFinalAction                 fncWhenLeak;
+    void*                           pUserData;
     bool                            bInitializationTimeNotPassed;
     char                            reserved01[sizeof(void*) - sizeof(bool)];
 };
 
 
 PRINV_LEAKA_EXPORT int  ProgsInvestAnalyzeLeakingInitialize(struct SPrInvAnalyzeLeakingData* a_pTables,
-                                                            TypeFinalAction CPPUTILS_ARG_NN a_fncWhenLeak,
+                                                            TypeFinalAction CPPUTILS_ARG_NN a_fncWhenLeak, void* a_pUserData,
                                                             const char* a_cpcStartTimeEnv, const char* a_cpcMaxForStackEnv);
 PRINV_LEAKA_EXPORT void ProgsInvestAnalyzeLeakingClean(struct SPrInvAnalyzeLeakingData* a_pTables);
 PRINV_LEAKA_EXPORT int  ProgsInvestAnalyzeLeakingAddAllocedItem(int a_goBackInTheStackCalc, void* a_ptr, struct SPrInvAnalyzeLeakingData* a_pTables);
 PRINV_LEAKA_EXPORT void ProgsInvestAnalyzeLeakingRemoveAllocedItem(void* a_ptr, struct SPrInvAnalyzeLeakingData* a_pTables);
+PRINV_LEAKA_EXPORT void ProgsInvestFinalActionPrintStackAndExit(void* a_pUserData,const struct StackInvestBacktrace* a_pStack);
 
 
 CPPUTILS_END_C

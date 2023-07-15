@@ -28,6 +28,7 @@ DEFINES += PRINV_LEAKA_COMPILING_SHARED_LIB
 
 
 SOURCES += $$files($${programsInvestigatorRepoRoot}/src/core/leak_analyze/*.c*,true)
+SOURCES += "$${cinternalRepoRoot}/src/core/cinternal_core_logger.c"
 
 COMMON_HDRS	= $$files($${programsInvestigatorRepoRoot}/include/*.h,true)
 COMMON_HDRSPP	= $$files($${programsInvestigatorRepoRoot}/include/*.hpp,true)
