@@ -1,16 +1,18 @@
 //
-// file:			crash_investigator_malloc_free_hook.h
-// path:			include/crash_investigator/crash_investigator_malloc_free_hook.h
-// created on:		2021 Nov 24
+// repo:            programs_investigator
+// file:			analyze_leaking.h
+// path:			include/progs_invest/analyze_leaking.h
+// created on:		2023 Jul 12
 // created by:		Davit Kalantaryan (davit.kalantaryan@gmail.com)
 //
 
-#ifndef CRASH_INVEST_INCLUDE_CRASH_INVEST_ANALYZE_LEAKING_H
-#define CRASH_INVEST_INCLUDE_CRASH_INVEST_ANALYZE_LEAKING_H
+#ifndef PROGS_INVEST_INCLUDE_PROGS_INVEST_ANALYZE_LEAKING_H
+#define PROGS_INVEST_INCLUDE_PROGS_INVEST_ANALYZE_LEAKING_H
 
-#include <crash_investigator/crash_investigator_internal_header.h>
+#include <progs_invest/export_symbols.h>
 #include <cinternal/lw_mutex_recursive.h>
 #include <cinternal/hash/dllhash.h>
+#include <cinternal/thread_local_sys.h>
 #include <time.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -18,29 +20,33 @@
 
 CPPUTILS_BEGIN_C
 
+struct StackInvestBacktrace;
+typedef void (*TypeFinalAction)(const struct StackInvestBacktrace* a_pStack);
 
-struct SCrInvAnalyzeLeakingData {
+struct SPrInvAnalyzeLeakingData {
     cinternal_lw_recursive_mutex_t  mutexForHashes;
     CinternalDLLHash_t              hashByAddress;
     CinternalDLLHash_t              hashByStack;
-    int*                            pnIgnoreForThisThread;
+    CinternalTlsData                ignoreForThisThreadTlsKey;
     size_t                          countForThisStackMax;
     size_t                          unMaxValue;
     time_t                          initTimeSec;
     time_t                          deltaTimeToStartAnalyze;
+    TypeFinalAction                 fncWhenLeak;
     bool                            bInitializationTimeNotPassed;
     char                            reserved01[sizeof(void*) - sizeof(bool)];
 };
 
 
-CRASH_INVEST_EXPORT int  CrashInvestAnalyzeLeakingInitialize(struct SCrInvAnalyzeLeakingData* a_pTables, int*CPPUTILS_ARG_NN a_pnIgnoreForThisThread,
+PRINV_LEAKA_EXPORT int  ProgsInvestAnalyzeLeakingInitialize(struct SPrInvAnalyzeLeakingData* a_pTables,
+                                                            TypeFinalAction CPPUTILS_ARG_NN a_fncWhenLeak,
                                                             const char* a_cpcStartTimeEnv, const char* a_cpcMaxForStackEnv);
-CRASH_INVEST_EXPORT void CrashInvestAnalyzeLeakingClean(struct SCrInvAnalyzeLeakingData* a_pTables);
-CRASH_INVEST_EXPORT int  CrashInvestAnalyzeLeakingAddAllocedItem(int a_goBackInTheStackCalc, void* a_ptr, struct SCrInvAnalyzeLeakingData* a_pTables);
-CRASH_INVEST_EXPORT void CrashInvestAnalyzeLeakingRemoveAllocedItem(void* a_ptr, struct SCrInvAnalyzeLeakingData* a_pTables);
+PRINV_LEAKA_EXPORT void ProgsInvestAnalyzeLeakingClean(struct SPrInvAnalyzeLeakingData* a_pTables);
+PRINV_LEAKA_EXPORT int  ProgsInvestAnalyzeLeakingAddAllocedItem(int a_goBackInTheStackCalc, void* a_ptr, struct SPrInvAnalyzeLeakingData* a_pTables);
+PRINV_LEAKA_EXPORT void ProgsInvestAnalyzeLeakingRemoveAllocedItem(void* a_ptr, struct SPrInvAnalyzeLeakingData* a_pTables);
 
 
 CPPUTILS_END_C
 
 
-#endif  // #ifndef CRASH_INVEST_INCLUDE_CRASH_INVEST_ANALYZE_LEAKING_H
+#endif  // #ifndef PROGS_INVEST_INCLUDE_PROGS_INVEST_ANALYZE_LEAKING_H

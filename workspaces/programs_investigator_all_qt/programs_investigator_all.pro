@@ -11,6 +11,7 @@ CONFIG += ordered
 include ( "$${PWD}/../../prj/common/common_qt/flags_common.pri" )
 
 SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/core/libprogs_invest_basic_qt/libprogs_invest_basic.pro"
+SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/core/libanalyze_leaking_qt/libanalyze_leaking.pro"
 
 SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/tests/alloc_free_hook_test01_qt/alloc_free_hook_test01.pro"
 SUBDIRS		+=	"$${programsInvestigatorRepoRoot}/prj/tests/alloc_free_hook_test02_lib_qt/alloc_free_hook_test02_lib.pro"
