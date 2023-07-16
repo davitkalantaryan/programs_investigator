@@ -21,6 +21,7 @@ CONFIG -= qt
 
 LIBS += -L$${DESTDIR}/../lib
 LIBS += -lprogs_invest_basic
+LIBS += -ldwarf
 LIBS += -pthread
 LIBS += -ldl
 

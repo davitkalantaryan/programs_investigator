@@ -65,6 +65,7 @@ CPPUTILS_C_CODE_INITIALIZER(programs_investigator_core_memory_leak_init){
                                                    &AllocFreeHookCLibRealloc, &AllocFreeHookCLibFree,
                                                    &ProgsInvestFinalActionPrintStackAndExit,
                                                    "MEMORY_LEAK_ANALYZE_INIT_TIME_SEC_DEFAULT","MEMORY_LEAK_ANALYZE_MAX_ALLOC_DEFAULT");
+    CInternalLogError("s_pTable = %p",s_pTable);
     if(!s_pTable){
         CInternalLogError("Table is not created");
         exit(1);

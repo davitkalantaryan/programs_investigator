@@ -64,7 +64,6 @@ struct SPrInvLeakAnlzMem{
     struct SPrInvLeakAnlzMem* next;
     void* pPtr;
     size_t  size;
-    CinternalDLLHashItem_t hashIterAdr;
 };
 
 
@@ -123,7 +122,7 @@ static inline void PR_INV_DECREMENT_PTR(CinternalTlsData a_tlsKey){
 
 
 static inline bool ProgsInvestAnalyzeLeakingHasReasonForEarlyReturnInline(void* a_ptr, struct SPrInvAnalyzeLeakingData* a_pTables){
-    if(a_pTables->ignoreForThisThreadTlsKey){
+    if(CinternalTlsGetSpecific(a_pTables->ignoreForThisThreadTlsKey)){
         return true;
     }
     else {
@@ -238,6 +237,7 @@ static inline void  PrInvLeakAnalyzeAnalyzeWhenHasStackItemInline(struct SPrInvA
                                                                  void* CPPUTILS_ARG_NN a_ptr, size_t a_size,
                                                                  CinternalDLLHashItem_t a_hashIterStack){
     size_t unHashAdr;
+    CinternalDLLHashItem_t hashIterAdr;
     struct SPrInvLeakAnlzStackItemPriv* const pStackItem = (struct SPrInvLeakAnlzStackItemPriv*)(a_hashIterStack->data);
     struct SPrInvLeakAnlzMem* const pMemItem = CreateMemoryItemInline(pStackItem,a_ptr,a_size);
     StackInvestFreeBacktraceData(a_pCurStack);  //  no need to keep this stack data twce
@@ -245,10 +245,10 @@ static inline void  PrInvLeakAnalyzeAnalyzeWhenHasStackItemInline(struct SPrInvA
         CInternalLogError("Unable create memory!");
         exit(1);
     }
-    pMemItem->hashIterAdr = CInternalDLLHashFindEx(a_pTables->hashByAddress,a_ptr,0,&unHashAdr);
-    assert((pMemItem->hashIterAdr)==CPPUTILS_NULL);
-    pMemItem->hashIterAdr = CInternalDLLHashAddDataWithKnownHash(a_pTables->hashByAddress,pMemItem,a_ptr,0,unHashAdr);
-    if(!pMemItem->hashIterAdr){
+    hashIterAdr = CInternalDLLHashFindEx(a_pTables->hashByAddress,a_ptr,0,&unHashAdr);
+    assert(hashIterAdr==CPPUTILS_NULL);
+    hashIterAdr = CInternalDLLHashAddDataWithKnownHash(a_pTables->hashByAddress,pMemItem,a_ptr,0,unHashAdr);
+    if(!hashIterAdr){
         RemoveMemoryItemInline(pMemItem);
         CInternalLogError("Unable add memory to hash!");
         exit(1);
@@ -267,6 +267,7 @@ static inline void PrInvLeakAnalyzeAnalyzeWhenNoStackItemInline(struct SPrInvAna
                                                                 struct StackInvestBacktrace* CPPUTILS_ARG_NN a_pCurStack,
                                                                 void* CPPUTILS_ARG_NN a_ptr, size_t a_size, size_t a_unHashStack){
     size_t unHashAdr;
+    CinternalDLLHashItem_t hashIterAdr;
     struct SPrInvLeakAnlzMem* pMemItem;
     struct SPrInvLeakAnlzStackItemPriv* const pStackItem = (struct SPrInvLeakAnlzStackItemPriv*)AllocFreeHookCLibMalloc(sizeof(struct SPrInvLeakAnlzStackItemPriv));
     if(!pStackItem){
@@ -287,9 +288,9 @@ static inline void PrInvLeakAnalyzeAnalyzeWhenNoStackItemInline(struct SPrInvAna
         CInternalLogError("Unable create memory!");
         exit(1);
     }
-    pMemItem->hashIterAdr = CInternalDLLHashFindEx(a_pTables->hashByAddress,a_ptr,0,&unHashAdr);
-    assert((pMemItem->hashIterAdr)==CPPUTILS_NULL);
-    pMemItem->hashIterAdr = CInternalDLLHashAddDataWithKnownHash(a_pTables->hashByAddress,pMemItem,a_ptr,0,unHashAdr);
+    hashIterAdr = CInternalDLLHashFindEx(a_pTables->hashByAddress,a_ptr,0,&unHashAdr);
+    assert(hashIterAdr==CPPUTILS_NULL);
+    hashIterAdr = CInternalDLLHashAddDataWithKnownHash(a_pTables->hashByAddress,pMemItem,a_ptr,0,unHashAdr);
 }
 
 
@@ -457,7 +458,7 @@ PRINV_LEAKA_EXPORT struct SPrInvAnalyzeLeakingData* ProgsInvestAnalyzeLeakingIni
     pTables->hasRecoveryStack = 0;
     pTables->unMaxValue = 0;
 
-    return 0;
+    return pTables;
 }
 
 
