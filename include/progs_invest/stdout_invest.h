@@ -11,6 +11,7 @@
 
 #include <progs_invest/export_symbols.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 
 CPPUTILS_BEGIN_C
@@ -22,6 +23,7 @@ enum PrInvStdoutHndl{PrInvStdoutHndlNone,PrInvStdoutHndlOut,PrInvStdoutHndlErr};
 typedef int (*TypePrInvStdoutInvClbk)(enum PrInvStdoutHndl,const void*,size_t size,size_t count);
 
 
+PRINV_STDOUTINV_EXPORT int ProgInvestStdoutInvestInitialize(bool a_preventRecursion);
 PRINV_STDOUTINV_EXPORT TypePrInvStdoutInvClbk ProgInvestGetStdoutInvestClbkCurrent(void);
 PRINV_STDOUTINV_EXPORT TypePrInvStdoutInvClbk ProgInvestGetStdoutInvestClbkOriginal(void);
 PRINV_STDOUTINV_EXPORT TypePrInvStdoutInvClbk ProgInvestSetStdoutInvestClbkAndGetOld(TypePrInvStdoutInvClbk a_clbk);

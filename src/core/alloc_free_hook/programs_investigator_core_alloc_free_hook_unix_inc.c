@@ -47,12 +47,16 @@ static void* MemoryHandlerMallocInitialStatic(size_t a_size);
 static void* MemoryHandlerCallocInitialStatic(size_t a_nmemb, size_t a_size);
 static void* MemoryHandlerReallocInitialStatic(void* a_ptr, size_t a_size);
 static void  MemoryHandlerFreeInitialStatic(void* a_ptr);
+static void* MemoryHandlerReallocFinalStatic(void* a_ptr, size_t a_size);
+static void MemoryHandlerFreeFinalStatic(void* a_ptr);
 
 static int s_nLibraryInited = 0;
 CPPUTILS_DLL_PRIVATE TypeAllocFreeHookMalloc  g_malloc  = &MemoryHandlerMallocInitialStatic;
 CPPUTILS_DLL_PRIVATE TypeAllocFreeHookCalloc  g_calloc  = &MemoryHandlerCallocInitialStatic;
 CPPUTILS_DLL_PRIVATE TypeAllocFreeHookRealloc g_realloc = &MemoryHandlerReallocInitialStatic;
 CPPUTILS_DLL_PRIVATE TypeAllocFreeHookFree    g_free    = &MemoryHandlerFreeInitialStatic;
+static TypeAllocFreeHookRealloc s_realloc_user = CPPUTILS_NULL;
+static TypeAllocFreeHookFree    s_free_user    = CPPUTILS_NULL;
 
 static TypeAllocFreeHookMalloc  s_malloc_c_lib  = CPPUTILS_NULL;
 static TypeAllocFreeHookCalloc  s_calloc_c_lib  = CPPUTILS_NULL;
@@ -74,16 +78,26 @@ static struct SCrInvAnalyzeLeakingData   s_analyzeData;
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 
+static void crash_investigator_linux_simple_alloc_free_inc_clean(void){
+
+    g_malloc  = s_malloc_c_lib;
+    g_calloc  = s_calloc_c_lib;
+    s_realloc_user = s_realloc_c_lib;
+    s_free_user    = s_free_c_lib;
+
+#ifdef ANALIZE_ALLOC_FREE_COUNT
+    CrashInvestAnalyzeLeakingClean(&s_analyzeData);
+#endif
+
+}
+
+
 static inline void InitLibraryIfNotInitedInline(void){
     static int snStartedInitLibrary = 0;
-    if(s_nLibraryInited){return;}
+
     if(snStartedInitLibrary){return;}
     snStartedInitLibrary = 1;
-
-    g_malloc  = &MemoryHandlerMallocInitialStatic;
-    g_calloc  = &MemoryHandlerCallocInitialStatic;
-    g_realloc = &MemoryHandlerReallocInitialStatic;
-    g_free    = &MemoryHandlerFreeInitialStatic;
+    if(s_nLibraryInited){return;}
 
     s_malloc_c_lib  = (TypeAllocFreeHookMalloc)dlsym(RTLD_NEXT, "malloc");
     s_calloc_c_lib  = (TypeAllocFreeHookCalloc)dlsym(RTLD_NEXT, "calloc");
@@ -97,10 +111,14 @@ static inline void InitLibraryIfNotInitedInline(void){
 
     g_malloc  = s_malloc_c_lib;
     g_calloc  = s_calloc_c_lib;
-    g_realloc = s_realloc_c_lib;
-    g_free    = s_free_c_lib;
+    s_realloc_user = s_realloc_c_lib;
+    s_free_user = s_free_c_lib;
+    g_realloc = &MemoryHandlerReallocFinalStatic;
+    g_free    = &MemoryHandlerFreeFinalStatic;
 
     s_nLibraryInited = 1;
+
+    atexit(&crash_investigator_linux_simple_alloc_free_inc_clean);
 
 #ifdef MEMORY_HANDLE_WAIT_FOR_DEBUGGER
     fprintf(stdout,"Press any key then press enter to continue "); fflush(stdout);
@@ -129,14 +147,14 @@ ALLOCFREEHOOK_EXPORT void AllocFreeHookSetCallocFnc(TypeAllocFreeHookCalloc a_ca
 ALLOCFREEHOOK_EXPORT void AllocFreeHookSetReallocFnc(TypeAllocFreeHookRealloc a_realloc)
 {
     InitLibraryIfNotInitedInline();
-    g_realloc = a_realloc;
+    s_realloc_user = a_realloc;
 }
 
 
 ALLOCFREEHOOK_EXPORT void AllocFreeHookSetFreeFnc(TypeAllocFreeHookFree a_free)
 {
     InitLibraryIfNotInitedInline();
-    g_free = a_free;
+    s_free_user = a_free;
 }
 
 
@@ -219,13 +237,13 @@ ALLOCFREEHOOK_EXPORT TypeAllocFreeHookCalloc AllocFreeHookGetCallocFnc(void)
 
 ALLOCFREEHOOK_EXPORT TypeAllocFreeHookRealloc AllocFreeHookGetReallocFnc(void)
 {
-    return g_realloc;
+    return s_realloc_user;
 }
 
 
 ALLOCFREEHOOK_EXPORT TypeAllocFreeHookFree AllocFreeHookGetFreeFnc(void)
 {
-    return g_free;
+    return s_free_user;
 }
 
 
@@ -332,7 +350,7 @@ static void MemoryHandlerFreeInitialStatic(void* a_ptr)
 
 
 
-CPPUTILS_DLL_PRIVATE void* MemoryHandlerRealloc(void* a_ptr, size_t a_size)
+static void* MemoryHandlerReallocFinalStatic(void* a_ptr, size_t a_size)
 {
     if(a_ptr){
         const size_t cunMemPosition = (size_t)((char*)a_ptr);
@@ -349,7 +367,7 @@ CPPUTILS_DLL_PRIVATE void* MemoryHandlerRealloc(void* a_ptr, size_t a_size)
                     cunOffset -= sizeof(struct SMemoryHandlerInitMemData);
                     pcCurrentMemPointer = s_vcInitialBuffer + cunOffset;
                     pItem = (struct SMemoryHandlerInitMemData*)pcCurrentMemPointer;
-                    pRet = (*g_realloc)(CPPUTILS_NULL,a_size);
+                    pRet = (*s_realloc_user)(CPPUTILS_NULL,a_size);
                     if(pRet){
                         memcpySize = (a_size<pItem->totalSize)?a_size:(pItem->totalSize);
                         memcpy(pRet,pcCurrentMemPointer+sizeof(struct SMemoryHandlerInitMemData),memcpySize);
@@ -365,11 +383,11 @@ CPPUTILS_DLL_PRIVATE void* MemoryHandlerRealloc(void* a_ptr, size_t a_size)
         }  //  if(cunMemPosition>cunInitMemPosition){
     }  //  if(a_ptr){
 
-    return (*g_realloc)(a_ptr,a_size);  // in all other cases call the users callback
+    return (*s_realloc_user)(a_ptr,a_size);  // in all other cases call the users callback
 }
 
 
-CPPUTILS_DLL_PRIVATE void MemoryHandlerFree(void* a_ptr)
+static void MemoryHandlerFreeFinalStatic(void* a_ptr)
 {
     if(a_ptr){
         const size_t cunMemPosition = (size_t)((char*)a_ptr);
@@ -383,15 +401,7 @@ CPPUTILS_DLL_PRIVATE void MemoryHandlerFree(void* a_ptr)
         }  //  if(cunMemPosition>cunInitMemPosition){
     }  //  if(a_ptr){
 
-    (*g_free)(a_ptr);  // in all other cases call the users callback
-}
-
-
-//
-CPPUTILS_CODE_INITIALIZER(MemoryHandlerInit){
-
-    InitLibraryIfNotInitedInline();
-
+    (*s_free_user)(a_ptr);  // in all other cases call the users callback
 }
 
 

@@ -12,10 +12,12 @@
 #ifndef _WIN32
 
 #include <progs_invest/stdout_invest.h>
+#include <progs_invest/alloc_free_hook.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <unistd.h>
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
@@ -24,6 +26,8 @@
 #define __USE_GNU
 #endif
 #include <dlfcn.h>
+
+#define PROGS_INVEST_STDOUT_INVEST_PREVENT_RECURSION_HERE
 
 
 CPPUTILS_BEGIN_C
@@ -37,12 +41,15 @@ static size_t FwriteInitial(const void* a_ptr, size_t a_size, size_t a_nmemb,FIL
 static size_t FwriteFinal(const void* a_ptr, size_t a_size, size_t a_nmemb,FILE* a_stream);
 static int PrInvStdoutInvClbkOriginal(enum PrInvStdoutHndl a_hndl,const void* a_pBuffer,size_t a_size, size_t a_count);
 
-static pthread_key_t    s_threadLocalKey;
-static Type_puts s_original_puts = &PutsInitial;
-static Type_puts s_puts = &PutsInitial;
-static Type_fwrite s_original_fwrite = &FwriteInitial;
-static Type_fwrite s_fwrite = &FwriteInitial;
-static TypePrInvStdoutInvClbk  s_userClbk = &PrInvStdoutInvClbkOriginal;
+#ifdef PROGS_INVEST_STDOUT_INVEST_PREVENT_RECURSION_HERE
+static void ThreadLocalKeyDestructor(void* a_ptr);
+static pthread_key_t*    s_pThreadLocalKey = CPPUTILS_NULL;
+#endif
+static Type_puts                s_puts_c_lib        = CPPUTILS_NULL;
+static Type_fwrite              s_fwrite_c_lib      = CPPUTILS_NULL;
+static Type_puts                s_puts              = &PutsInitial;
+static Type_fwrite              s_fwrite            = &FwriteInitial;
+static TypePrInvStdoutInvClbk   s_userClbk          = &PrInvStdoutInvClbkOriginal;
 
 
 int puts(const char* a_cpcString)
@@ -57,21 +64,107 @@ size_t fwrite(const void* a_ptr, size_t a_size, size_t a_nmemb,FILE* a_stream)
 }
 
 
+static void PrgInvestStackInvestCleanup(void){
+    s_puts = s_puts_c_lib;
+    s_fwrite = s_fwrite_c_lib;
+#ifdef PROGS_INVEST_STDOUT_INVEST_PREVENT_RECURSION_HERE
+
+    if(s_pThreadLocalKey){
+        pthread_key_t* const pThreadLocalKey = s_pThreadLocalKey;
+        s_pThreadLocalKey = CPPUTILS_NULL;
+        pthread_key_delete(*pThreadLocalKey);
+        AllocFreeHookCLibFree(pThreadLocalKey);
+    }
+
+#endif
+}
+
+
+static inline void InitializeCLibPointersInline(void){
+    static int snPtrsInited = 0;
+    static int snPtrsInitStarted = 0;
+
+    if(snPtrsInitStarted){return;}
+    snPtrsInitStarted = 1;
+    if(snPtrsInited){return;}
+
+    //write(STDOUT_FILENO,"",1);
+    //write(STDERR_FILENO,"",1);
+    // Upper code works and it is better, but we will use write function to implement user space FS
+    dprintf(STDOUT_FILENO," ");
+    dprintf(STDERR_FILENO," ");
+
+    s_puts = s_puts_c_lib = CPPUTILS_REINTERPRET_CAST(Type_puts,dlsym(RTLD_NEXT, "puts"));
+    s_fwrite = s_fwrite_c_lib = CPPUTILS_REINTERPRET_CAST(Type_fwrite,dlsym(RTLD_NEXT, "fwrite"));
+
+    snPtrsInited = 1;
+}
+
+
+static inline int InitializeStdoutInvestInline(bool a_preventRecursion){
+    static int snInited = 0;
+    static int snStartedInitLibrary = 0;
+
+    if(snStartedInitLibrary){return 0;}
+    snStartedInitLibrary = 1;
+    if(snInited){return 0;}
+
+
+#ifdef PROGS_INVEST_STDOUT_INVEST_PREVENT_RECURSION_HERE
+
+    if(a_preventRecursion){
+        pthread_key_t* const pThreadLocalKey = (pthread_key_t*)AllocFreeHookCLibMalloc(sizeof(pthread_key_t));
+        if(!pThreadLocalKey){return 1;}
+        if(pthread_key_create(pThreadLocalKey,&ThreadLocalKeyDestructor)){
+            AllocFreeHookCLibFree(pThreadLocalKey);
+            return 1;
+        }
+        s_pThreadLocalKey = pThreadLocalKey;
+    }
+
+#else
+
+    CPPUTILS_STATIC_CAST(void,a_preventRecursion);
+
+#endif
+
+    InitializeCLibPointersInline();
+
+    s_puts = &PutsFinal;
+    s_fwrite = &FwriteFinal;
+    snInited = 1;
+    atexit(&PrgInvestStackInvestCleanup);
+
+    return 0;
+}
+
+
+PRINV_STDOUTINV_EXPORT int ProgInvestStdoutInvestInitialize(bool a_preventRecursion)
+{
+    const int nRet = InitializeStdoutInvestInline(a_preventRecursion);
+    return nRet;
+}
+
+
 PRINV_STDOUTINV_EXPORT TypePrInvStdoutInvClbk ProgInvestGetStdoutInvestClbkCurrent(void)
 {
+    InitializeCLibPointersInline();
     return s_userClbk;
 }
 
 
 PRINV_STDOUTINV_EXPORT TypePrInvStdoutInvClbk ProgInvestGetStdoutInvestClbkOriginal(void)
 {
+    InitializeCLibPointersInline();
     return &PrInvStdoutInvClbkOriginal;
 }
 
 
 PRINV_STDOUTINV_EXPORT TypePrInvStdoutInvClbk ProgInvestSetStdoutInvestClbkAndGetOld(TypePrInvStdoutInvClbk a_clbk)
 {
-    const TypePrInvStdoutInvClbk oldClbk = s_userClbk;
+    TypePrInvStdoutInvClbk oldClbk;
+    InitializeStdoutInvestInline(true);
+    oldClbk = s_userClbk;
     s_userClbk = a_clbk;
     return oldClbk;
 }
@@ -81,9 +174,9 @@ static int PrInvStdoutInvClbkOriginal(enum PrInvStdoutHndl a_hndl,const void* a_
 {
     switch(a_hndl){
     case PrInvStdoutHndlOut:
-        return CPPUTILS_STATIC_CAST(int,(*s_original_fwrite)(a_pBuffer,a_size,a_count,stdout));
+        return CPPUTILS_STATIC_CAST(int,(*s_fwrite_c_lib)(a_pBuffer,a_size,a_count,stdout));
     case PrInvStdoutHndlErr:
-        return CPPUTILS_STATIC_CAST(int,(*s_original_fwrite)(a_pBuffer,a_size,a_count,stderr));
+        return CPPUTILS_STATIC_CAST(int,(*s_fwrite_c_lib)(a_pBuffer,a_size,a_count,stderr));
     default:
         break;
     }  //  switch(a_hndl){
@@ -95,12 +188,20 @@ static int PutsFinal(const char* a_str)
 {
     int nRet;
 
-    if(pthread_getspecific(s_threadLocalKey)){
-        return (*s_original_puts)(a_str);
+#ifdef PROGS_INVEST_STDOUT_INVEST_PREVENT_RECURSION_HERE
+    if(s_pThreadLocalKey){
+        if(pthread_getspecific(*s_pThreadLocalKey)){
+            return (*s_puts_c_lib)(a_str);
+        }
+        pthread_setspecific(*s_pThreadLocalKey, (void*)1);
     }
-    pthread_setspecific(s_threadLocalKey, (void*)1);
-    nRet = (*s_userClbk)(PrInvStdoutHndlOut,a_str,1,strlen(a_str));
-    pthread_setspecific(s_threadLocalKey,CPPUTILS_NULL);
+#endif
+    nRet = (*s_userClbk)(PrInvStdoutHndlOut,a_str,1,strlen(a_str));    
+#ifdef PROGS_INVEST_STDOUT_INVEST_PREVENT_RECURSION_HERE
+    if(s_pThreadLocalKey){
+        pthread_setspecific(*s_pThreadLocalKey,CPPUTILS_NULL);
+    }
+#endif
     return nRet;
 }
 
@@ -111,65 +212,44 @@ static size_t FwriteFinal(const void* a_ptr, size_t a_size, size_t a_nmemb,FILE*
     int nRet;
     enum PrInvStdoutHndl outHndl;
 
-    if(pthread_getspecific(s_threadLocalKey)){
-        return (*s_original_fwrite)(a_ptr,a_size,a_nmemb,a_stream);
+#ifdef PROGS_INVEST_STDOUT_INVEST_PREVENT_RECURSION_HERE
+    if(s_pThreadLocalKey){
+        if(pthread_getspecific(*s_pThreadLocalKey)){
+            return (*s_fwrite_c_lib)(a_ptr,a_size,a_nmemb,a_stream);
+        }
+        pthread_setspecific(*s_pThreadLocalKey, (void*)1);
     }
-    pthread_setspecific(s_threadLocalKey, (void*)1);
+#endif
     outHndl = (a_stream==stdout)?PrInvStdoutHndlOut:PrInvStdoutHndlErr;
-    nRet = (*s_userClbk)(outHndl,a_ptr,a_size,a_nmemb);
-    pthread_setspecific(s_threadLocalKey, CPPUTILS_NULL);
+    nRet = (*s_userClbk)(outHndl,a_ptr,a_size,a_nmemb);    
+#ifdef PROGS_INVEST_STDOUT_INVEST_PREVENT_RECURSION_HERE
+    if(s_pThreadLocalKey){
+        pthread_setspecific(*s_pThreadLocalKey,CPPUTILS_NULL);
+    }
+#endif
     return nRet;
 }
 
 
-static void PrgInvestStackInvestCleanup(void){
-    s_puts = s_original_puts;
-    s_fwrite = s_original_fwrite;
-    pthread_key_delete(s_threadLocalKey);
-}
 
-
+#ifdef PROGS_INVEST_STDOUT_INVEST_PREVENT_RECURSION_HERE
 static void ThreadLocalKeyDestructor(void* a_ptr){
     CPPUTILS_STATIC_CAST(void,a_ptr);
 }
-
-
-static inline void InitializeStdoutInvestInline(void){
-    static int snInited = 0;
-    if(snInited){return;}
-    snInited = 1;
-    if(pthread_key_create(&s_threadLocalKey,&ThreadLocalKeyDestructor)){
-        exit(1);
-    }
-    s_puts = &PutsInitial;
-    s_fwrite = &FwriteInitial;
-    s_userClbk = &PrInvStdoutInvClbkOriginal;
-    s_original_puts = CPPUTILS_REINTERPRET_CAST(Type_puts,dlsym(RTLD_NEXT, "puts"));
-    s_original_fwrite = CPPUTILS_REINTERPRET_CAST(Type_fwrite,dlsym(RTLD_NEXT, "fwrite"));
-    s_puts = &PutsFinal;
-    s_fwrite = &FwriteFinal;
-    atexit(&PrgInvestStackInvestCleanup);
-}
+#endif
 
 
 static int PutsInitial(const char* a_str)
 {
-    InitializeStdoutInvestInline();
-    return PutsFinal(a_str);
+    InitializeCLibPointersInline();
+    return (*s_puts_c_lib)(a_str);
 }
 
 
 static size_t FwriteInitial(const void* a_ptr, size_t a_size, size_t a_nmemb,FILE* a_stream)
 {
-    InitializeStdoutInvestInline();
-    return FwriteFinal(a_ptr, a_size, a_nmemb,a_stream);
-}
-
-
-CPPUTILS_C_CODE_INITIALIZER(InitializeStdoutInvest){
-
-    InitializeStdoutInvestInline();
-
+    InitializeCLibPointersInline();
+    return (*s_fwrite_c_lib)(a_ptr, a_size, a_nmemb,a_stream);
 }
 
 
