@@ -50,6 +50,11 @@ static void  MemoryHandlerFreeInitialStatic(void* a_ptr);
 static void* MemoryHandlerReallocFinalStatic(void* a_ptr, size_t a_size);
 static void MemoryHandlerFreeFinalStatic(void* a_ptr);
 
+static void* AllocFreeHookCLibMallocInitialStatic(size_t a_size);
+static void* AllocFreeHookCLibCallocInitialStatic(size_t a_nmemb, size_t a_size);
+static void* AllocFreeHookCLibReallocInitialStatic(void* a_ptr, size_t a_size);
+static void  AllocFreeHookCLibFreeInitialStatic(void* a_ptr);
+
 static int s_nLibraryInited = 0;
 CPPUTILS_DLL_PRIVATE TypeAllocFreeHookMalloc  g_malloc  = &MemoryHandlerMallocInitialStatic;
 CPPUTILS_DLL_PRIVATE TypeAllocFreeHookCalloc  g_calloc  = &MemoryHandlerCallocInitialStatic;
@@ -58,10 +63,10 @@ CPPUTILS_DLL_PRIVATE TypeAllocFreeHookFree    g_free    = &MemoryHandlerFreeInit
 static TypeAllocFreeHookRealloc s_realloc_user = CPPUTILS_NULL;
 static TypeAllocFreeHookFree    s_free_user    = CPPUTILS_NULL;
 
-static TypeAllocFreeHookMalloc  s_malloc_c_lib  = CPPUTILS_NULL;
-static TypeAllocFreeHookCalloc  s_calloc_c_lib  = CPPUTILS_NULL;
-static TypeAllocFreeHookRealloc s_realloc_c_lib = CPPUTILS_NULL;
-static TypeAllocFreeHookFree    s_free_c_lib    = CPPUTILS_NULL;
+static TypeAllocFreeHookMalloc  s_malloc_c_lib  = &AllocFreeHookCLibMallocInitialStatic;
+static TypeAllocFreeHookCalloc  s_calloc_c_lib  = &AllocFreeHookCLibCallocInitialStatic;
+static TypeAllocFreeHookRealloc s_realloc_c_lib = &AllocFreeHookCLibReallocInitialStatic;
+static TypeAllocFreeHookFree    s_free_c_lib    = &AllocFreeHookCLibFreeInitialStatic;
 
 static size_t   s_unInitialMemoryOffset = 0;
 static char     s_vcInitialBuffer[MEMORY_HANDLER_INIT_MEM_SIZE];
@@ -249,7 +254,6 @@ ALLOCFREEHOOK_EXPORT TypeAllocFreeHookFree AllocFreeHookGetFreeFnc(void)
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
-
 static inline size_t AllocFreeHookCalculateRoundedMemorySizeInline(size_t a_initialSize){
     a_initialSize += sizeof(struct SMemoryHandlerInitMemData);
     if(0x8 & a_initialSize){
@@ -275,6 +279,36 @@ static void* MemoryHandlerMallocInitialStatic(size_t a_size)
 
     return CPPUTILS_NULL;
 }
+
+
+
+static void* AllocFreeHookCLibMallocInitialStatic(size_t a_size)
+{
+    InitLibraryIfNotInitedInline();
+    return (*s_malloc_c_lib)(a_size);
+}
+
+
+static void* AllocFreeHookCLibCallocInitialStatic(size_t a_nmemb, size_t a_size)
+{
+    InitLibraryIfNotInitedInline();
+    return (*s_calloc_c_lib)(a_nmemb,a_size);
+}
+
+
+static void* AllocFreeHookCLibReallocInitialStatic(void* a_ptr, size_t a_size)
+{
+    InitLibraryIfNotInitedInline();
+    return (*s_realloc_c_lib)(a_ptr,a_size);
+}
+
+
+static void AllocFreeHookCLibFreeInitialStatic(void* a_ptr)
+{
+    InitLibraryIfNotInitedInline();
+    (*s_free_c_lib)(a_ptr);
+}
+
 
 
 static void* MemoryHandlerCallocInitialStatic(size_t a_nmemb, size_t a_size2)
