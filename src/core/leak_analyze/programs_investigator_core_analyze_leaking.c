@@ -31,7 +31,7 @@ CPPUTILS_BEGIN_C
 #define MEM_LEAK_ANALYZE_HASH_BY_ADR_BASKETS        131072
 #define MEM_LEAK_ANALYZE_HASH_BY_STACK_BASKETS      8192
 #define MEMORY_LEAK_ANALYZE_INIT_TIME_SEC_DEFAULT   8
-#define MEMORY_LEAK_ANALYZE_MAX_ALLOC_DEFAULT       300
+#define MEMORY_LEAK_ANALYZE_MAX_ALLOC_DEFAULT       250
 
 
 struct SPrInvAnalyzeLeakingData {
@@ -52,7 +52,8 @@ struct SPrInvAnalyzeLeakingData {
     uint16_t                        hasRecoveryStack;
     bool                            bInitializationTimeNotPassed;
     bool                            keepLeakingStacks;
-    char                            reserved01[sizeof(void*) - 2*sizeof(bool)-sizeof(uint16_t)];
+    bool                            analyzeOngoing;
+    char                            reserved01[sizeof(void*) - 3*sizeof(bool)-sizeof(uint16_t)];
 };
 
 
@@ -122,25 +123,28 @@ static inline void PR_INV_DECREMENT_PTR(CinternalTlsData a_tlsKey){
 
 
 static inline bool ProgsInvestAnalyzeLeakingHasReasonForEarlyReturnInline(void* a_ptr, struct SPrInvAnalyzeLeakingData* a_pTables){
-    if(CinternalTlsGetSpecific(a_pTables->ignoreForThisThreadTlsKey)){
-        return true;
-    }
-    else {
-        if(!a_ptr){return true;}
-        PR_INV_INCREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
-        if(a_pTables->bInitializationTimeNotPassed){
-            time_t currentTime;
-            currentTime = time(&currentTime);
-            if((currentTime - (a_pTables->initTimeSec))>(a_pTables->deltaTimeToStartAnalyze)){
-                a_pTables->bInitializationTimeNotPassed = false;
-            }
-            else{
-                PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
-                return true;
-            }
+    if(a_pTables->analyzeOngoing){
+        if(CinternalTlsGetSpecific(a_pTables->ignoreForThisThreadTlsKey)){
+            return true;
         }
-    }  //  else of if((*(a_pTables->pnIgnoreForThisThread))>0){
-    return false;
+        else {
+            if(!a_ptr){return true;}
+            PR_INV_INCREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
+            if(a_pTables->bInitializationTimeNotPassed){
+                time_t currentTime;
+                currentTime = time(&currentTime);
+                if((currentTime - (a_pTables->initTimeSec))>(a_pTables->deltaTimeToStartAnalyze)){
+                    a_pTables->bInitializationTimeNotPassed = false;
+                }
+                else{
+                    PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
+                    return true;
+                }
+            }
+        }  //  else of if((*(a_pTables->pnIgnoreForThisThread))>0){
+        return false;
+    }
+    return true;
 }
 
 
@@ -310,13 +314,43 @@ static inline void CrashInvestAnalyzeLeakingAddAllocedItemNoLockInline(void* a_p
 }
 
 
+static inline void* ProgsInvestAnalyzeLeakingMallocCallocBelowInline(struct SPrInvAnalyzeLeakingData* CPPUTILS_ARG_NN a_pTables,
+                                                                     struct StackInvestBacktrace* CPPUTILS_ARG_NN a_pCurStack,
+                                                                     size_t a_count, size_t a_elemSize,
+                                                                     void* (*a_fpAlloc)(const struct SPrInvAnalyzeLeakingData* a_pTables, size_t a_count, size_t a_elemSize)){
+    void* pRet;
+    const size_t cunSizeAll = a_count * a_elemSize;
+    if(a_pTables->hasRecoveryStack){
+        size_t unHashStack;
+        const CinternalDLLHashItem_t hashIterStack = CInternalDLLHashFindEx(a_pTables->hashByStack,a_pCurStack,0,&unHashStack);
+        if(hashIterStack){  // this stack is there SPrInvLeakAnlzMem
+            struct SPrInvLeakAnlzStackItemPriv* const pStackItem = (struct SPrInvLeakAnlzStackItemPriv*)(hashIterStack->data);
+            if(pStackItem->isRecovery){
+                struct SPrInvLeakAnlzMem* pMemItem;
+                pMemItem = pStackItem->first;
+                while(pMemItem){
+                    if(pMemItem->size>=cunSizeAll){
+                        return pMemItem->pPtr;
+                    }
+                }  //  while(pMemItem){
+            }  //  if(pStackItem->isRecovery){
+        }  //  if(hashIterStack){  // this stack is there SPrInvLeakAnlzMem
+    }  // if(a_pTables->hasRecoveryStack){
+
+    pRet = (*a_fpAlloc)(a_pTables,a_count, a_elemSize);
+    if(pRet){
+        CrashInvestAnalyzeLeakingAddAllocedItemNoLockInline(pRet,cunSizeAll,a_pCurStack,a_pTables);
+    }
+    return pRet;
+}
+
+
 static inline void* ProgsInvestAnalyzeLeakingMallocCallocInline(struct SPrInvAnalyzeLeakingData* a_pTables,
                                                                 int a_goBackInTheStackCalc, size_t a_count, size_t a_elemSize,
                                                                 void* (*a_fpAlloc)(const struct SPrInvAnalyzeLeakingData* a_pTables, size_t a_count, size_t a_elemSize))
 {
     void* pRet;
     struct StackInvestBacktrace* pCurStack;
-    const size_t cunSizeAll = a_count * a_elemSize;;
 
     if(ProgsInvestAnalyzeLeakingHasReasonForEarlyReturnInline((void*)1,a_pTables)){
         return (*a_fpAlloc)(a_pTables,a_count, a_elemSize);
@@ -329,56 +363,11 @@ static inline void* ProgsInvestAnalyzeLeakingMallocCallocInline(struct SPrInvAna
     }
 
     cinternal_lw_recursive_mutex_lock(&(a_pTables->mutexForHashes));
-
-    if(a_pTables->hasRecoveryStack){
-        size_t unHashStack;
-        const CinternalDLLHashItem_t hashIterStack = CInternalDLLHashFindEx(a_pTables->hashByStack,pCurStack,0,&unHashStack);
-        if(hashIterStack){  // this stack is there SPrInvLeakAnlzMem
-            struct SPrInvLeakAnlzStackItemPriv* const pStackItem = (struct SPrInvLeakAnlzStackItemPriv*)(hashIterStack->data);
-            if(pStackItem->isRecovery){
-                struct SPrInvLeakAnlzMem* pMemItem;
-                //if(pStackItem->countForThisStack<2){
-                //    pStackItem->isRecovery = false;
-                //    --(a_pTables->hasRecoveryStack);
-                //    goto nextPoint;
-                //}
-                pMemItem = pStackItem->first;
-                while(pMemItem){
-                    if(pMemItem->size>=cunSizeAll){
-                        cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
-                        PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
-                        return pMemItem->pPtr;
-                    }
-                }  //  while(pMemItem){
-            }  //  if(pStackItem->isRecovery){
-            // we do not have proper element
-            pRet = (*a_fpAlloc)(a_pTables,a_count, a_elemSize);
-            if(!pRet){
-                cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
-                PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
-                return CPPUTILS_NULL;
-            }
-            PrInvLeakAnalyzeAnalyzeWhenHasStackItemInline(a_pTables,pCurStack,pRet,cunSizeAll,hashIterStack);
-            cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
-            PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
-            return pRet;
-        }  //  if(hashIterStack){  // this stack is there SPrInvLeakAnlzMem
-        pRet = (*a_fpAlloc)(a_pTables,a_count, a_elemSize);
-        if(!pRet){
-            cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
-            PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
-            return CPPUTILS_NULL;
-        }
-        PrInvLeakAnalyzeAnalyzeWhenNoStackItemInline(a_pTables,pCurStack,pRet, cunSizeAll,unHashStack);
+    pRet = ProgsInvestAnalyzeLeakingMallocCallocBelowInline(a_pTables,pCurStack,a_count,a_elemSize,a_fpAlloc);
+    if(CinternalTlsGetSpecific(a_pTables->ignoreForThisThreadTlsKey)){
         cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
         PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
-        return pRet;
-    }  // if(a_pTables->hasRecoveryStack){
-
-    pRet = (*a_fpAlloc)(a_pTables,a_count, a_elemSize);
-    CrashInvestAnalyzeLeakingAddAllocedItemNoLockInline(pRet,cunSizeAll,pCurStack,a_pTables);
-    cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
-    PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
+    }
     return pRet;
 }
 
@@ -457,6 +446,7 @@ PRINV_LEAKA_EXPORT struct SPrInvAnalyzeLeakingData* ProgsInvestAnalyzeLeakingIni
     pTables->keepLeakingStacks = ((pTables->fncWhenLeak)==(&ProgsInvestFinalActionTryFixLeak))?true:false;
     pTables->hasRecoveryStack = 0;
     pTables->unMaxValue = 0;
+    pTables->analyzeOngoing = true;
 
     return pTables;
 }
@@ -515,24 +505,22 @@ PRINV_LEAKA_EXPORT void* ProgsInvestAnalyzeLeakingGetUserData(struct SPrInvAnaly
 
 PRINV_LEAKA_EXPORT void ProgsInvestFinalActionPrintStackAndExit(struct SPrInvAnalyzeLeakingData* a_pTables,struct SPrInvLeakAnlzStackItem2* a_pStackItem)
 {
-    struct StackInvestStackItem*const pStackItems = (struct StackInvestStackItem*)AllocFreeHookCLibMalloc(
-        ((size_t)(a_pStackItem->pStack->stackDeepness))*sizeof(struct StackInvestStackItem));
+    const struct StackInvestOptimalPrint* pStackOptPrint;
+
     CInternalLogError("  possible memory leak!!!!!  pUserData = %p. Stack will be printed and pogram will exit",a_pTables->pUserData);
-    if(pStackItems){
-        if(!StackInvestConvertBacktraceToNames(a_pStackItem->pStack,pStackItems)){
-            int i=0;
-            for(;i<a_pStackItem->pStack->stackDeepness;++i){
-                if(pStackItems[i].line>=0){
-                    CInternalLogError("bin: %s, %s(%d), fn:%s",
-                                      pStackItems[i].binFile, pStackItems[i].sourceFile,
-                                      pStackItems[i].line, pStackItems[i].funcName);
-                }
-                else{
-                    CInternalLogError("%s",pStackItems[i].binFile);
-                }
-            }  //  for(;i<pItem->pStack->stackDeepness;++i){
-        }  //  if(!StackInvestConvertBacktraceToNames(pItem->pStack,pStackItems)){
-    }  //  if(pStackItems){
+
+    a_pTables->analyzeOngoing = false;
+    if(CinternalTlsGetSpecific(a_pTables->ignoreForThisThreadTlsKey)){
+        cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
+        PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
+    }
+
+    pStackOptPrint = StackInvestOptimalPrintCreate(a_pStackItem->pStack,0,a_pStackItem->pStack->stackDeepness);
+    if(pStackOptPrint){
+        StackInvestOptimalPrintPrint(pStackOptPrint);
+        StackInvestOptimalPrintClean(pStackOptPrint);
+    }
+
     exit(1);
 }
 
@@ -596,8 +584,10 @@ static void ProgsInvestAnalyzeLeakingAddAllocedItemStatic(int a_goBackInTheStack
 
     cinternal_lw_recursive_mutex_lock(&(a_pTables->mutexForHashes));
     CrashInvestAnalyzeLeakingAddAllocedItemNoLockInline(a_ptr,a_size,pCurStack,a_pTables);
-    cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
-    PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
+    if(CinternalTlsGetSpecific(a_pTables->ignoreForThisThreadTlsKey)){
+        cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
+        PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
+    }
 }
 
 
@@ -606,8 +596,10 @@ static void ProgsInvestAnalyzeLeakingRemoveAllocedItemStatic(void* a_ptr, struct
     PR_INV_INCREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
     cinternal_lw_recursive_mutex_lock(&(a_pTables->mutexForHashes));
     CrashInvestAnalyzeLeakingRemoveAllocedItemNoLockInline(a_ptr,a_pTables);
-    cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
-    PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
+    if(CinternalTlsGetSpecific(a_pTables->ignoreForThisThreadTlsKey)){
+        cinternal_lw_recursive_mutex_unlock(&(a_pTables->mutexForHashes));
+        PR_INV_DECREMENT_PTR(a_pTables->ignoreForThisThreadTlsKey);
+    }
 }
 
 
