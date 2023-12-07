@@ -39,5 +39,11 @@
     <ClCompile Include="..\..\..\contrib\stack_investigator\src\core\stack_investigator_backtrace_windows.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\contrib\stack_investigator\src\core\stack_investigator_backtrace_common.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\contrib\stack_investigator\contrib\cinternal\src\core\cinternal_core_logger.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
