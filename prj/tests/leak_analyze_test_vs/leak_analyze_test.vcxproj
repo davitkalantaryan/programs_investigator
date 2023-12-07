@@ -284,6 +284,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\contrib\stack_investigator\contrib\cinternal\src\core\cinternal_core_hash_dllhash.c" />
+    <ClCompile Include="..\..\..\contrib\stack_investigator\contrib\cinternal\src\core\cinternal_core_lw_mutex_recursive.c" />
+    <ClCompile Include="..\..\..\contrib\stack_investigator\contrib\cinternal\src\core\cinternal_core_replace_function_windows.c" />
+    <ClCompile Include="..\..\..\contrib\stack_investigator\src\core\stack_investigator_backtrace_windows.c" />
+    <ClCompile Include="..\..\..\src\core\alloc_free_hook\programs_investigator_core_alloc_free_hook_windows.c" />
     <ClCompile Include="..\..\..\src\core\leak_analyze\programs_investigator_core_analyze_leaking.c" />
     <ClCompile Include="..\..\..\src\core\leak_analyze\programs_investigator_core_memory_leak.c" />
     <ClCompile Include="..\..\..\src\tests\main_leak_analyze_test.cpp" />
