@@ -8,7 +8,7 @@
 #ifndef ALLOCFREEHOOK_INCLUDE_ALLOCFREEHOOK_ALLOC_FREE_HOOK_H
 #define ALLOCFREEHOOK_INCLUDE_ALLOCFREEHOOK_ALLOC_FREE_HOOK_H
 
-#include <allocfreehook/export_symbols.h>
+#include <progs_invest/export_symbols.h>
 #include <stddef.h>
 
 

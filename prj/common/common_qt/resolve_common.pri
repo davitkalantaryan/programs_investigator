@@ -6,6 +6,7 @@
 #
 
 message ("$${PWD}/resolve_common.pri")
+programsInvestigatorResolveCommonIncluded = 1
 
 isEmpty( programsInvestigatorRepoRoot ) {
         programsInvestigatorRepoRoot = $$(programsInvestigatorRepoRoot)

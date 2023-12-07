@@ -1,6 +1,6 @@
 #
-# file:		alloc_free_hook_test02_exe.pro
-# path:		prj/tests/alloc_free_hook_test02_exe_qt/alloc_free_hook_test02_exe.pro
+# file:			alloc_free_hook_test01.pro
+# path:			prj/tests/alloc_free_hook_test01_qt/alloc_free_hook_test01.pro
 # created on:	2021 Mar 14
 # created by:	Davit Kalantaryan (davit.kalantaryan@desy.de)
 #
@@ -15,13 +15,14 @@ QT -= core
 QT -= widgets
 CONFIG -= qt
 
-LIBS += -L$${artifactRoot}/$${SYSTEM_PATH}/$$CONFIGURATION/tlib
-LIBS += -lalloc_free_hook_test02_lib
+LIBS += -pthread
+LIBS += -ldl
 
-DEFINES += ALLOCFREEHOOK_LOAD_FROM_DLL
+DEFINES += CPPUTILS_USING_STATIC_LIB_OR_OBJECTS
+
 
 SOURCES	+=		\
-        "$${PWD}/../../../src/tests/main_alloc_free_hook_test02_exe.cpp"
+        "$${PWD}/../../../src/tests/main_stdout_invest_unix_test.cpp"
 
 COMMON_HDRS	= $$files($${programsInvestigatorRepoRoot}/include/*.h,true)
 COMMON_HDRSPP	= $$files($${programsInvestigatorRepoRoot}/include/*.hpp,true)
@@ -29,4 +30,4 @@ COMMON_HDRSPP	= $$files($${programsInvestigatorRepoRoot}/include/*.hpp,true)
 HEADERS += $$COMMON_HDRS
 HEADERS += $$COMMON_HDRSPP
 
-OTHER_FILES += $$files($${PWD}/../alloc_free_hook_test02_exe_mkfl/*.Makefile,false)
+OTHER_FILES += $$files($${PWD}/../any_quick_test_mkfl/*.Makefile,false)

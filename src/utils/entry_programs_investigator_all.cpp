@@ -5,7 +5,7 @@
 // created by:		Davit Kalantaryan (davit.kalantaryan@desy.de)
 //
 
-#include <allocfreehook/export_symbols.h>
+#include <progs_invest/export_symbols.h>
 
 
 CPPUTILS_BEGIN_C
