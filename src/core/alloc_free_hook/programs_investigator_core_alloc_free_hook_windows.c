@@ -330,6 +330,7 @@ static int alloc_free_hook_cleanup(void) CPPUTILS_NOEXCEPT
 
 CPPUTILS_CODE_INITIALIZER(alloc_free_hook_initialize) {
 	alloc_free_hook_initialize_inline();
+	_onexit(&alloc_free_hook_cleanup);
 }
 
 
