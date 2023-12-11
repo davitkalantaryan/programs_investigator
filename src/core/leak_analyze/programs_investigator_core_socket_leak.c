@@ -142,6 +142,8 @@ CPPUTILS_C_CODE_INITIALIZER(programs_investigator_core_socket_leak_init){
         exit(1);
     }
 
+    s_pTable->countForThisStackMax = 20;
+
     s_socket_original = &socket;
     s_closesocket_original = &closesocket;
     s_loadlibA_st_lib = &LoadLibraryA;
