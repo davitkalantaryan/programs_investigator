@@ -127,9 +127,6 @@ static void programs_investigator_core_memory_leak_clean(void) CPPUTILS_NOEXCEPT
 
     ProgsInvestLeakAnalyzeCleanup(s_pTable);
     s_pTable = CPPUTILS_NULL;
-
-    WSACleanup();
-
 }
 
 
@@ -137,33 +134,7 @@ static void programs_investigator_core_memory_leak_clean(void) CPPUTILS_NOEXCEPT
 CPPUTILS_C_CODE_INITIALIZER(programs_investigator_core_socket_leak_init){
 
     struct SCInternalReplaceFunctionData vReplaceData[4];
-    WORD wVersionRequested;
-    WSADATA wsaData;
-    //SOCKET aTestSocket;
-    
-    wVersionRequested = MAKEWORD(2, 2);
-    
-    if (WSAStartup(wVersionRequested, &wsaData) != 0) {
-        exit(1);
-    }
-    
-    /* Confirm that the WinSock DLL supports 2.2.		*/
-    /* Note that if the DLL supports versions greater	*/
-    /* than 2.2 in addition to 2.2, it will still return*/
-    /* 2.2 in wVersion since that is the version we		*/
-    /* requested.										*/
-    
-    if (LOBYTE(wsaData.wVersion) != 2 || HIBYTE(wsaData.wVersion) != 2){
-        WSACleanup();
-        exit(1);
-    }
-
-    //aTestSocket = socket(AF_INET, SOCK_STREAM, 0);
-    //if (aTestSocket == INVALID_SOCKET) {
-    //    exit(1);
-    //}
-    //closesocket(aTestSocket);
-    
+        
     s_pTable = ProgsInvestLeakAnalyzeInitialize(1, CPPUTILS_NULL, CPPUTILS_NULL, CPPUTILS_NULL);
     CInternalLogDebug("s_pTable = %p", s_pTable);
     if (!s_pTable) {

@@ -362,8 +362,15 @@ static void HashByAddressDeallocator(void* a_pData) CPPUTILS_NOEXCEPT
 
 static void PrInvLeakAnalyzerAnalyzeLeakingStackDefault(struct SPrInvLeakAnalyzerData* CPPUTILS_ARG_NN a_pTables, struct StackInvestBacktrace* CPPUTILS_ARG_NN a_pStack) CPPUTILS_NOEXCEPT
 {
+    const struct StackInvestOptimalPrint* pStackOptPrint;
     CPPUTILS_STATIC_CAST(void, a_pTables);
-    CPPUTILS_STATIC_CAST(void, a_pStack);
+    CInternalLogError("Leak");
+    pStackOptPrint = StackInvestOptimalPrintCreate(a_pStack, 0, a_pStack->stackDeepness);
+    if (pStackOptPrint) {
+        StackInvestOptimalPrintPrint(pStackOptPrint);
+        StackInvestOptimalPrintClean(pStackOptPrint);
+    }
+    exit(1);
 }
 
 
