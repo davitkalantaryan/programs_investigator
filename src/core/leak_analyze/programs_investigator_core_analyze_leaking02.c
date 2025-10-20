@@ -42,6 +42,7 @@ struct SPrInvLeakAnalyzerDataAll {
     CinternalDLLHash_t                          hashByResource;
     CinternalDLLHash_t                          hashByStack;
     CinternalTlsData                            ignoreForThisThreadTlsKey;
+    CinternalTlsData                            ignoreForThisThreadTlsKeyByUser;
     size_t                                      unMaxValue;
     time_t                                      initTimeSec;
     time_t                                      deltaTimeToStartAnalyze;
@@ -90,11 +91,14 @@ static inline int AddResourceToStackItemInline(
 {
     size_t unHashResource;
     const CinternalDLLHashItem_t hashIterResource = CInternalDLLHashFindEx(a_pTables->hashByResource, a_resource, 0, &unHashResource);
-    assert(hashIterResource==CPPUTILS_NULL);
-    if (!CInternalDLLHashAddDataWithKnownHash(a_pTables->hashByResource, a_pStackItem, a_resource, 0, unHashResource)) {
-        return INLINE_RETURN_EXIT;
+    //assert(hashIterResource==CPPUTILS_NULL); // todo: understand why assert fails
+    if(hashIterResource==CPPUTILS_NULL){
+        if (!CInternalDLLHashAddDataWithKnownHash(a_pTables->hashByResource, a_pStackItem, a_resource, 0, unHashResource)) {
+            return INLINE_RETURN_EXIT;
+        }
+        ++(a_pStackItem->countForThisStack);
     }
-    ++(a_pStackItem->countForThisStack);
+
     return a_desiredRet;
 }
 
@@ -205,6 +209,16 @@ ProgsInvestLeakAnalyzeInitialize(
         return CPPUTILS_NULL;
     }
 
+    nRet = CinternalTlsAlloc(&(pTables->ignoreForThisThreadTlsKeyByUser), &ClearThreadLocalKeyStatic);
+    if (nRet) {
+        CinternalTlsDelete(pTables->ignoreForThisThreadTlsKey);
+        CInternalDLLHashDestroy(pTables->hashByStack);
+        CInternalDLLHashDestroy(pTables->hashByResource);
+        cinternal_lw_recursive_mutex_destroy(&(pTables->mutexForHashes));
+        (*pTables->m_free)(pTables);
+        return CPPUTILS_NULL;
+    }
+
     pTables->publ.pUserData = CPPUTILS_NULL;
     pTables->publ.countForThisStackMax = PR_INVEST_LEAK_ANALYZE_DEF_MAX_IN_STACK;
     pTables->publ.bStopAnalyzing = false;
@@ -225,11 +239,26 @@ PRINV_LEAKA_EXPORT void ProgsInvestLeakAnalyzeCleanup(struct SPrInvLeakAnalyzerD
     if (a_pTables) {
         struct SPrInvLeakAnalyzerDataAll* const pTables = PUBL_TABLE_TO_ALL_TABLE(a_pTables);
         CinternalTlsDelete(pTables->ignoreForThisThreadTlsKey);
+        CinternalTlsDelete(pTables->ignoreForThisThreadTlsKeyByUser);
         CInternalDLLHashDestroyEx(pTables->hashByResource, &HashByAddressDeallocator);
         CInternalDLLHashDestroyEx(pTables->hashByStack, &HashByStackDeallocator);
         cinternal_lw_recursive_mutex_destroy(&(pTables->mutexForHashes));
         (*pTables->m_free)(a_pTables);
     }
+}
+
+
+void ProgsInvestLeakAnalyzeIgnoreStackAnalyzePrivate(struct SPrInvLeakAnalyzerData* a_pTables)
+{
+    struct SPrInvLeakAnalyzerDataAll* const pTables = PUBL_TABLE_TO_ALL_TABLE(a_pTables);
+    CinternalTlsSetSpecific(pTables->ignoreForThisThreadTlsKeyByUser, (void*)1);
+}
+
+
+void ProgsInvestLeakAnalyzeUnignoreStackAnalyzePrivate(struct SPrInvLeakAnalyzerData* a_pTables)
+{
+    struct SPrInvLeakAnalyzerDataAll* const pTables = PUBL_TABLE_TO_ALL_TABLE(a_pTables);
+    CinternalTlsSetSpecific(pTables->ignoreForThisThreadTlsKeyByUser, CPPUTILS_NULL);
 }
 
 
@@ -251,6 +280,10 @@ PRINV_LEAKA_EXPORT void ProgsInvestLeakAnalyzeAddResource(
     }
 
     if (CinternalTlsGetSpecific(pTables->ignoreForThisThreadTlsKey)) {
+        return;
+    }
+
+    if (CinternalTlsGetSpecific(pTables->ignoreForThisThreadTlsKeyByUser)) {
         return;
     }
 

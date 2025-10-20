@@ -50,5 +50,8 @@
     <ClInclude Include="..\..\..\include\progs_invest\analyze_leaking02.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\include\progs_invest\analyze_leaking03.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

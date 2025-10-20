@@ -11,14 +11,26 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+#include <Windows.h>
 
 int main()
 {
+
+    // new approach
+    const HMODULE hLib = LoadLibraryA("D:\\davit\\dev\\programs_investigator\\sys\\win_x64\\Debug\\dll\\memleak_analyze.dll");
+    if (!hLib) {
+        fprintf(stderr, "Unable to load library\n");
+        return 1;
+    }
+
     while(1){
         char* pVal = new char[100];
         printf("%p\n",pVal);
     }
+
+    FreeLibrary(hLib);
 
     return 0;
 }

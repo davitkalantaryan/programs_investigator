@@ -80,6 +80,28 @@ static void programs_investigator_core_memory_leak_clean(void){
 }
 
 
+CPPUTILS_DLL_PUBLIC void ProgsInvestLeakAnalyzeSetMaxAllowedCount(size_t a_allowedCount)
+{
+    s_pTable->countForThisStackMax = a_allowedCount;
+}
+
+
+void ProgsInvestLeakAnalyzeIgnoreStackAnalyzePrivate(struct SPrInvLeakAnalyzerData* a_pTables);
+
+CPPUTILS_DLL_PUBLIC void ProgsInvestLeakAnalyzeIgnoreStackAnalyze(void)
+{
+    ProgsInvestLeakAnalyzeIgnoreStackAnalyzePrivate(s_pTable);
+}
+
+
+void ProgsInvestLeakAnalyzeUnignoreStackAnalyzePrivate(struct SPrInvLeakAnalyzerData* a_pTables);
+
+CPPUTILS_DLL_PUBLIC void ProgsInvestLeakAnalyzeUnignoreStackAnalyze(void)
+{
+    ProgsInvestLeakAnalyzeUnignoreStackAnalyzePrivate(s_pTable);
+}
+
+
 CPPUTILS_C_CODE_INITIALIZER(programs_investigator_core_memory_leak_init){
 
     s_pTable = ProgsInvestLeakAnalyzeInitialize(10,CPPUTILS_NULL,&AllocFreeHookCLibMalloc, &AllocFreeHookCLibFree);
@@ -88,8 +110,6 @@ CPPUTILS_C_CODE_INITIALIZER(programs_investigator_core_memory_leak_init){
         CInternalLogError("Table is not created");
         exit(1);
     }
-
-    s_pTable->countForThisStackMax = 200;
 
     s_malloc_original = AllocFreeHookGetMallocFnc();
     s_calloc_original = AllocFreeHookGetCallocFnc();
